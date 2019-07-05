@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ContainerLibrary;
+using System.Collections.Generic;
 using System.Linq;
-using ContainerLibrary;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 

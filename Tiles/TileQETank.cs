@@ -19,7 +19,7 @@ namespace QuantumStorage.Tiles
 			Main.tileLavaDeath[Type] = false;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Origin = new Point16(0, 1);
-			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16 };
+			TileObjectData.newTile.CoordinateHeights = new[] {16, 16};
 			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(mod.GetTileEntity<TEQETank>().Hook_AfterPlacement, -1, 0, false);
 			TileObjectData.addTile(Type);
 			disableSmartCursor = true;
@@ -47,13 +47,13 @@ namespace QuantumStorage.Tiles
 			//	return;
 			//}
 
-			//PortableStorage.Instance.PanelUI.UI.HandleUI(qeTank);
+			BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
 			TEQETank qeChest = mod.GetTileEntity<TEQETank>(i, j);
-			//QuantumStorage.Instance.PanelUI.UI.CloseUI(qeChest);
+			BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(qeChest);
 
 			Item.NewItem(i * 16, j * 16, 32, 32, mod.ItemType<Items.QETank>());
 			qeChest.Kill(i, j);
