@@ -11,6 +11,8 @@ namespace QuantumStorage.Tiles
 {
 	public class QETank : BaseTile
 	{
+		public override string Texture => "QuantumStorage/Textures/Tiles/QETank";
+
 		public override void SetDefaults()
 		{
 			Main.tileSolidTop[Type] = true;

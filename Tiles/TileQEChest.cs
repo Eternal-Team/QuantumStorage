@@ -11,6 +11,8 @@ namespace QuantumStorage.Tiles
 {
 	public class QEChest : BaseTile
 	{
+		public override string Texture => "QuantumStorage/Textures/Tiles/QEChest";
+
 		public override void SetDefaults()
 		{
 			Main.tileSolidTop[Type] = false;

@@ -8,7 +8,11 @@ namespace QuantumStorage
 	{
 		public override void Load()
 		{
+			Utility.Initialize();
+
 			TagSerializer.AddSerializer(new FrequencySerializer());
 		}
+
+		public override void Unload() => BaseLibrary.Utility.UnloadNullableTypes();
 	}
 }

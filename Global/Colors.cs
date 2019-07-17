@@ -8,6 +8,7 @@
 		Yellow,
 		Purple,
 		Blue,
-		Orange
+		Orange,
+		None
 	}
 }

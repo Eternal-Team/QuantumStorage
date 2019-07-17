@@ -6,6 +6,8 @@ namespace QuantumStorage.Items
 {
 	public class QEChest : BaseItem
 	{
+		public override string Texture => "QuantumStorage/Textures/Items/QEChest";
+
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Quantum Entangled Chest");

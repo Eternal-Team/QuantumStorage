@@ -1,24 +1,24 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
 using Terraria.ID;
 
 namespace QuantumStorage.Global
 {
-	public static class Utility
+	internal static class Utility
 	{
-		public static Colors ColorFromItem(this Item item, Colors existing)
+		internal static Dictionary<int, Colors> ValidItems;
+
+		internal static void Initialize()
 		{
-			Main.LocalPlayer.noThrow = 2;
-			switch (item.type)
+			ValidItems = new Dictionary<int, Colors>
 			{
-				case ItemID.Diamond: return Colors.White;
-				case ItemID.Ruby: return Colors.Red;
-				case ItemID.Emerald: return Colors.Green;
-				case ItemID.Topaz: return Colors.Yellow;
-				case ItemID.Amethyst: return Colors.Purple;
-				case ItemID.Sapphire: return Colors.Blue;
-				case ItemID.Amber: return Colors.Orange;
-				default: return existing;
-			}
+				{ItemID.Diamond, Colors.White},
+				{ItemID.Ruby, Colors.Red},
+				{ItemID.Emerald, Colors.Green},
+				{ItemID.Topaz, Colors.Yellow},
+				{ItemID.Amethyst, Colors.Purple},
+				{ItemID.Sapphire, Colors.Blue},
+				{ItemID.Amber, Colors.Orange}
+			};
 		}
 	}
 }

@@ -7,7 +7,6 @@ using System;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
-using Colors = QuantumStorage.Global.Colors;
 
 namespace QuantumStorage.TileEntities
 {
@@ -29,14 +28,14 @@ namespace QuantumStorage.TileEntities
 				if (QSWorld.Instance.QEFluidHandlers.TryGetValue(frequency, out FluidHandler handler)) return handler;
 
 				FluidHandler temp = QSWorld.baseFluidHandler.Clone();
-				QSWorld.Instance.QEFluidHandlers.Add(new Frequency(frequency.colors), temp);
+				QSWorld.Instance.QEFluidHandlers.Add((Frequency)frequency.Clone(), temp);
 				return temp;
 			}
 		}
 
 		public TEQETank()
 		{
-			frequency = new Frequency(Colors.White, Colors.White, Colors.White);
+			frequency = new Frequency();
 		}
 
 		public override TagCompound Save() => new TagCompound
