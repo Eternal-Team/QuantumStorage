@@ -1,8 +1,6 @@
 ﻿using BaseLibrary.Tiles.TileEntites;
 using BaseLibrary.UI;
 using ContainerLibrary;
-using QuantumStorage.Global;
-using QuantumStorage.Tiles;
 using System;
 using Terraria.Audio;
 using Terraria.ID;
@@ -10,9 +8,9 @@ using Terraria.ModLoader.IO;
 
 namespace QuantumStorage.TileEntities
 {
-	public class TEQETank : BaseTE, IFluidHandler, IHasUI
+	public class QETank : BaseTE, IFluidHandler, IHasUI
 	{
-		public override Type TileType => typeof(QETank);
+		public override Type TileType => typeof(Tiles.QETank);
 
 		public Guid ID { get; set; }
 		public BaseUIPanel UI { get; set; }
@@ -33,7 +31,7 @@ namespace QuantumStorage.TileEntities
 			}
 		}
 
-		public TEQETank()
+		public QETank()
 		{
 			frequency = new Frequency();
 		}

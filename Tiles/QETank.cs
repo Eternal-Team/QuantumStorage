@@ -2,7 +2,6 @@
 using BaseLibrary.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using QuantumStorage.TileEntities;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -23,7 +22,7 @@ namespace QuantumStorage.Tiles
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Origin = new Point16(0, 1);
 			TileObjectData.newTile.CoordinateHeights = new[] {16, 16};
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(mod.GetTileEntity<TEQETank>().Hook_AfterPlacement, -1, 0, false);
+			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(mod.GetTileEntity<TileEntities.QETank>().Hook_AfterPlacement, -1, 0, false);
 			TileObjectData.addTile(Type);
 			disableSmartCursor = true;
 			mineResist = 5f;
@@ -35,9 +34,9 @@ namespace QuantumStorage.Tiles
 
 		public override void RightClick(int i, int j)
 		{
-			TEQETank qeTank = mod.GetTileEntity<TEQETank>(i, j);
+			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
 			if (qeTank == null) return;
-			
+
 			BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
 		}
 
@@ -50,7 +49,7 @@ namespace QuantumStorage.Tiles
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
 		{
-			TEQETank qeTank = mod.GetTileEntity<TEQETank>(i, j);
+			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
 			if (qeTank == null) return;
 
 			Tile tile = Main.tile[i, j];
@@ -65,7 +64,7 @@ namespace QuantumStorage.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			TEQETank qeTank = mod.GetTileEntity<TEQETank>(i, j);
+			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
 			BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(qeTank);
 
 			Item.NewItem(i * 16, j * 16, 32, 32, mod.ItemType<Items.QETank>());

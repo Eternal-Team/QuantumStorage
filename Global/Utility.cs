@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Terraria.ID;
 
-namespace QuantumStorage.Global
+namespace QuantumStorage
 {
 	internal static class Utility
 	{
@@ -20,5 +21,14 @@ namespace QuantumStorage.Global
 				{ItemID.Amber, Colors.Orange}
 			};
 		}
+
+		internal static void Write(this BinaryWriter writer, Frequency frequency)
+		{
+			writer.Write((int)frequency[0]);
+			writer.Write((int)frequency[1]);
+			writer.Write((int)frequency[2]);
+		}
+
+		internal static Frequency ReadFrequency(this BinaryReader reader) => new Frequency((Colors)reader.ReadInt32(), (Colors)reader.ReadInt32(), (Colors)reader.ReadInt32());
 	}
 }

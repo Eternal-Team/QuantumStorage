@@ -3,15 +3,16 @@ using BaseLibrary.UI;
 using BaseLibrary.UI.Elements;
 using ContainerLibrary;
 using Microsoft.Xna.Framework;
-using QuantumStorage.TileEntities;
+using QuantumStorage.Items;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace QuantumStorage.UI
 {
-	public class QETankPanel : BaseUIPanel<QETank>
+	public class QEBagPanel : BaseUIPanel<QEBag>, IItemHandlerUI
 	{
-		private UITank tankFluid;
+		public ItemHandler Handler => Container.Handler;
+		public string GetTexture(Item item) => "QuantumStorage/Textures/Items/QEBag";
 
 		private Frequency tempFrequency = new Frequency();
 
@@ -24,7 +25,7 @@ namespace QuantumStorage.UI
 			Height = (172, 0);
 			this.Center();
 
-			UIText textLabel = new UIText("Quantum Entangled Tank")
+			UIText textLabel = new UIText("Quantum Entangled Bag")
 			{
 				HAlign = 0.5f
 			};
@@ -79,23 +80,30 @@ namespace QuantumStorage.UI
 					for (int i = 0; i < 3; i++) RemoveChild(buttonsFrequency[i]);
 					RemoveChild(buttonInitialize);
 
-					AddTank();
+					AddGrid();
 				};
 				Append(buttonInitialize);
 			}
-			else AddTank();
+			else AddGrid();
 		}
 
-		private void AddTank()
+		private void AddGrid()
 		{
-			tankFluid = new UITank(Container)
+			UIGrid<UIContainerSlot> gridItems = new UIGrid<UIContainerSlot>(9)
 			{
-				Width = (40, 0),
-				Height = (-44, 1),
-				Top = (36, 0),
-				HAlign = 0.5f
+				Width = (0, 1),
+				Height = (-28, 1),
+				Top = (28, 0),
+				OverflowHidden = true,
+				ListPadding = 4f
 			};
-			Append(tankFluid);
+			Append(gridItems);
+
+			for (int i = 0; i < Container.Handler.Slots; i++)
+			{
+				UIContainerSlot slot = new UIContainerSlot(() => Container.Handler, i);
+				gridItems.Add(slot);
+			}
 		}
 	}
 }

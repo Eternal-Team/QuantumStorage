@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework.Graphics;
-using QuantumStorage.Global;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -11,6 +10,8 @@ namespace QuantumStorage
 		internal static Texture2D textureEmptySocket;
 		internal static Texture2D textureGemsSide;
 		internal static Texture2D textureGemsMiddle;
+
+		// todo: syncing
 
 		public override void Load()
 		{

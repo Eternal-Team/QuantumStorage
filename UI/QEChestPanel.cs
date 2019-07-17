@@ -3,15 +3,13 @@ using BaseLibrary.UI;
 using BaseLibrary.UI.Elements;
 using ContainerLibrary;
 using Microsoft.Xna.Framework;
-using QuantumStorage.Global;
 using QuantumStorage.TileEntities;
 using Terraria;
 using Terraria.ModLoader;
-using Utility = QuantumStorage.Global.Utility;
 
 namespace QuantumStorage.UI
 {
-	public class QEChestPanel : BaseUIPanel<TEQEChest>, IItemHandlerUI
+	public class QEChestPanel : BaseUIPanel<QEChest>, IItemHandlerUI
 	{
 		public ItemHandler Handler => Container.Handler;
 		public string GetTexture(Item item) => "QuantumStorage/Textures/Items/QEChest";

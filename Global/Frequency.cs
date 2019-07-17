@@ -2,7 +2,7 @@
 using System.Linq;
 using Terraria.ModLoader.IO;
 
-namespace QuantumStorage.Global
+namespace QuantumStorage
 {
 	public class Frequency : ICloneable
 	{

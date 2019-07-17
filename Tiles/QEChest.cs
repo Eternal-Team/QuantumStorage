@@ -2,7 +2,6 @@
 using BaseLibrary.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using QuantumStorage.TileEntities;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -23,7 +22,7 @@ namespace QuantumStorage.Tiles
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Origin = new Point16(0, 1);
 			TileObjectData.newTile.CoordinateHeights = new[] {16, 16};
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(mod.GetTileEntity<TEQEChest>().Hook_AfterPlacement, -1, 0, false);
+			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(mod.GetTileEntity<TileEntities.QEChest>().Hook_AfterPlacement, -1, 0, false);
 			TileObjectData.addTile(Type);
 			disableSmartCursor = true;
 
@@ -34,7 +33,7 @@ namespace QuantumStorage.Tiles
 
 		public override void RightClick(int i, int j)
 		{
-			TEQEChest qeChest = mod.GetTileEntity<TEQEChest>(i, j);
+			TileEntities.QEChest qeChest = mod.GetTileEntity<TileEntities.QEChest>(i, j);
 			if (qeChest == null) return;
 
 			BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeChest);
@@ -49,7 +48,7 @@ namespace QuantumStorage.Tiles
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
 		{
-			TEQEChest qeChest = mod.GetTileEntity<TEQEChest>(i, j);
+			TileEntities.QEChest qeChest = mod.GetTileEntity<TileEntities.QEChest>(i, j);
 			if (qeChest == null) return;
 
 			Tile tile = Main.tile[i, j];
@@ -64,7 +63,7 @@ namespace QuantumStorage.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			TEQEChest qeChest = mod.GetTileEntity<TEQEChest>(i, j);
+			TileEntities.QEChest qeChest = mod.GetTileEntity<TileEntities.QEChest>(i, j);
 			BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(qeChest);
 
 			Item.NewItem(i * 16, j * 16, 32, 32, mod.ItemType<Items.QEChest>());

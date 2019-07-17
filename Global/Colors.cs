@@ -1,4 +1,4 @@
-﻿namespace QuantumStorage.Global
+﻿namespace QuantumStorage
 {
 	public enum Colors : short
 	{
