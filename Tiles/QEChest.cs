@@ -41,6 +41,9 @@ namespace QuantumStorage.Tiles
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
+			TileEntities.QEChest qeChest = mod.GetTileEntity<TileEntities.QEChest>(i, j);
+			if (qeChest == null|| !qeChest.frequency.IsSet) return;
+
 			Main.specX[nextSpecialDrawIndex] = i;
 			Main.specY[nextSpecialDrawIndex] = j;
 			nextSpecialDrawIndex++;

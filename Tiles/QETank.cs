@@ -42,6 +42,9 @@ namespace QuantumStorage.Tiles
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
+			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
+			if (qeTank == null || !qeTank.frequency.IsSet) return;
+
 			Main.specX[nextSpecialDrawIndex] = i;
 			Main.specY[nextSpecialDrawIndex] = j;
 			nextSpecialDrawIndex++;

@@ -38,9 +38,14 @@ namespace QuantumStorage.TileEntities
 
 		public override TagCompound Save() => new TagCompound
 		{
+			["ID"] = ID.ToString(),
 			["Frequency"] = frequency
 		};
 
-		public override void Load(TagCompound tag) => frequency = tag.Get<Frequency>("Frequency");
+		public override void Load(TagCompound tag)
+		{
+			ID = Guid.Parse(tag.GetString("ID"));
+			frequency = tag.Get<Frequency>("Frequency");
+		}
 	}
 }
