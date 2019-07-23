@@ -15,8 +15,23 @@ namespace QuantumStorage
 
 		// todo: syncing
 
+		/*
+		gems not consumed.
+		Bag and bucket need tooltip info
+		Right click kills the bag/bucket. Not always?
+		Inventories don't close when item is gone.
+		Black hole doesn't work with quantum bag
+		Gem tiles offset
+		Invs don't close when away from the storage.
+		way to reinitialize storages
+
+		PUMPS - Terra Firma
+		*/
+
 		public override void Load()
 		{
+			
+
 			Utility.Initialize();
 
 			TagSerializer.AddSerializer(new FrequencySerializer());

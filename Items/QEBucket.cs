@@ -69,7 +69,7 @@ namespace QuantumStorage.Items
 
 		public override bool UseItem(Player player)
 		{
-			ModFluid fluid = Handler.GetFluidInSlot(0);
+			ref ModFluid fluid = ref Handler.GetFluidInSlotByRef(0);
 			int targetX = Player.tileTargetX;
 			int targetY = Player.tileTargetY;
 			Tile tile = Main.tile[targetX, targetY];
@@ -90,15 +90,13 @@ namespace QuantumStorage.Items
 							int volume = Math.Min(fluid.volume, 255 - tile.liquid);
 							tile.liquid += (byte)volume;
 							fluid.volume -= volume;
-							if (fluid.volume <= 0)
-							{
-								Handler.SetFluidInSlot(0, null);
-								return true;
-							}
+							if (fluid.volume <= 0) fluid = null;
 
 							WorldGen.SquareTileFrame(targetX, targetY);
 
 							if (Main.netMode == 1) NetMessage.sendWater(targetX, targetY);
+
+							return true;
 						}
 					}
 				}
@@ -125,8 +123,6 @@ namespace QuantumStorage.Items
 					WorldGen.SquareTileFrame(targetX, targetY, false);
 					if (Main.netMode == 1) NetMessage.sendWater(targetX, targetY);
 					else Liquid.AddWater(targetX, targetY);
-
-					Handler.SetFluidInSlot(0, fluid);
 				}
 			}
 

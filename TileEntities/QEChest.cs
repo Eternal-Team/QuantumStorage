@@ -23,6 +23,8 @@ namespace QuantumStorage.TileEntities
 		{
 			get
 			{
+				if (!frequency.IsSet) return null;
+
 				if (QSWorld.Instance.QEItemHandlers.TryGetValue(frequency, out ItemHandler handler)) return handler;
 
 				handler = QSWorld.baseItemHandler.Clone();
@@ -33,6 +35,7 @@ namespace QuantumStorage.TileEntities
 
 		public QEChest()
 		{
+			ID = Guid.NewGuid();
 			frequency = new Frequency();
 		}
 

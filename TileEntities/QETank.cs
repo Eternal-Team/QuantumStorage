@@ -23,6 +23,8 @@ namespace QuantumStorage.TileEntities
 		{
 			get
 			{
+				if (!frequency.IsSet) return null;
+
 				if (QSWorld.Instance.QEFluidHandlers.TryGetValue(frequency, out FluidHandler handler)) return handler;
 
 				FluidHandler temp = QSWorld.baseFluidHandler.Clone();
@@ -33,6 +35,7 @@ namespace QuantumStorage.TileEntities
 
 		public QETank()
 		{
+			ID = Guid.NewGuid();
 			frequency = new Frequency();
 		}
 
