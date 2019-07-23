@@ -10,7 +10,6 @@ namespace QuantumStorage.Items
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Quantum Entangled Chest");
 			Tooltip.SetDefault("Stores 27 stacks of items\nRight-click on the slots with gems to change frequency");
 		}
 

@@ -1,2 +1,7 @@
 ﻿MapObject.QETank=Quantum Entangled Tank
 MapObject.QEChest=Quantum Entangled Chest
+
+ItemName.QEBag=Quantum Entangled Bag
+ItemName.QEBucket=Quantum Entangled Bucket
+ItemName.QEChest=Quantum Entangled Chest
+ItemName.QETank=Quantum Entangled Tank

@@ -10,7 +10,6 @@ namespace QuantumStorage.Items
 
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("Quantum Entangled Tank");
 			Tooltip.SetDefault("Stores 4B of fluid\nRight-click on the slots with gems to change frequency");
 		}
 

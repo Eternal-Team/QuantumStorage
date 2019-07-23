@@ -26,6 +26,10 @@ namespace QuantumStorage
 
 			switch (packetType)
 			{
+				case PacketType.AddItemFrequency: break;
+				case PacketType.AddFluidFrequency: break;
+				case PacketType.SyncItemFrequency: break;
+				case PacketType.SyncFluidFrequency: break;
 			}
 		}
 	}

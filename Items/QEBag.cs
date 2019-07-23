@@ -49,11 +49,6 @@ namespace QuantumStorage.Items
 			return clone;
 		}
 
-		public override void SetStaticDefaults()
-		{
-			DisplayName.SetDefault("Quantum Entangled Bag");
-		}
-
 		public override void SetDefaults()
 		{
 			ID = Guid.NewGuid();
@@ -70,12 +65,12 @@ namespace QuantumStorage.Items
 			return true;
 		}
 
+		public override bool ConsumeItem(Player player) => false;
+
 		public override bool CanRightClick() => true;
 
 		public override void RightClick(Player player)
 		{
-			item.stack++;
-
 			if (player.whoAmI == Main.LocalPlayer.whoAmI) BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(this);
 		}
 
