@@ -105,7 +105,7 @@ namespace QuantumStorage.Tiles
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
 			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
-			if (qeTank == null || !qeTank.frequency.IsSet) return;
+			if (qeTank == null) return;
 
 			Main.specX[nextSpecialDrawIndex] = i;
 			Main.specY[nextSpecialDrawIndex] = j;
@@ -122,9 +122,9 @@ namespace QuantumStorage.Tiles
 
 			Vector2 position = new Point16(i, j).ToScreenCoordinates();
 
-			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(5, 5), new Rectangle(6 * (int)qeTank.frequency[0], 0, 6, 10), Color.White, 0f, new Vector2(3, 5), 1f, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position + new Vector2(12, 0), new Rectangle(8 * (int)qeTank.frequency[1], 0, 8, 10), Color.White);
-			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(24, 0), new Rectangle(6 * (int)qeTank.frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.FlipHorizontally, 0f);
+			if (qeTank.frequency[0] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(5, 5), new Rectangle(6 * (int)qeTank.frequency[0], 0, 6, 10), Color.White, 0f, new Vector2(3, 5), 1f, SpriteEffects.None, 0f);
+			if (qeTank.frequency[1] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position + new Vector2(12, 0), new Rectangle(8 * (int)qeTank.frequency[1], 0, 8, 10), Color.White);
+			if (qeTank.frequency[2] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(24, 0), new Rectangle(6 * (int)qeTank.frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.FlipHorizontally, 0f);
 
 			ModFluid fluid = qeTank.Handler.GetFluidInSlot(0);
 			if (fluid != null)

@@ -140,23 +140,18 @@ namespace QuantumStorage.Items
 
 		public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
-			if (!frequency.IsSet) return;
-
-			spriteBatch.Draw(QuantumStorage.textureRingBig, position + new Vector2(4, 14) * scale, new Rectangle(0, 4 * (int)frequency[0], 22, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureRingBig, position + new Vector2(4, 18) * scale, new Rectangle(0, 4 * (int)frequency[1], 22, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureRingSmall, position + new Vector2(6, 22) * scale, new Rectangle(0, 4 * (int)frequency[2], 18, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
+			if (frequency[0] != Colors.None) spriteBatch.Draw(QuantumStorage.textureRingBig, position + new Vector2(4, 14) * scale, new Rectangle(0, 4 * (int)frequency[0], 22, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
+			if (frequency[1] != Colors.None) spriteBatch.Draw(QuantumStorage.textureRingBig, position + new Vector2(4, 18) * scale, new Rectangle(0, 4 * (int)frequency[1], 22, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
+			if (frequency[2] != Colors.None) spriteBatch.Draw(QuantumStorage.textureRingSmall, position + new Vector2(6, 22) * scale, new Rectangle(0, 4 * (int)frequency[2], 18, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
 		}
 
 		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
-			if (!frequency.IsSet) return;
+			Vector2 position = new Vector2(item.position.X - Main.screenPosition.X + item.width * 0.5f, item.position.Y - Main.screenPosition.Y + item.height - 14f + 2f);
 
-			Vector2 position = item.position - Main.screenPosition;
-			Vector2 origin = new Vector2(15, 16);
-
-			spriteBatch.Draw(QuantumStorage.textureRingBig, position + origin, new Rectangle(0, 4 * (int)frequency[0], 22, 4), alphaColor, rotation, origin - new Vector2(4, 16), scale, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureRingBig, position + origin, new Rectangle(0, 4 * (int)frequency[1], 22, 4), alphaColor, rotation, origin - new Vector2(4, 20), scale, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureRingSmall, position + origin, new Rectangle(0, 4 * (int)frequency[2], 18, 4), alphaColor, rotation, origin - new Vector2(6, 24), scale, SpriteEffects.None, 0f);
+			if (frequency[0] != Colors.None) spriteBatch.Draw(QuantumStorage.textureRingBig, position, new Rectangle(0, 4 * (int)frequency[0], 22, 4), alphaColor, rotation, new Vector2(11, 0), scale, SpriteEffects.None, 0f);
+			if (frequency[1] != Colors.None) spriteBatch.Draw(QuantumStorage.textureRingBig, position, new Rectangle(0, 4 * (int)frequency[1], 22, 4), alphaColor, rotation, new Vector2(11, -4), scale, SpriteEffects.None, 0f);
+			if (frequency[2] != Colors.None) spriteBatch.Draw(QuantumStorage.textureRingSmall, position, new Rectangle(0, 4 * (int)frequency[2], 18, 4), alphaColor, rotation, new Vector2(9, -8), scale, SpriteEffects.FlipHorizontally, 0f);
 		}
 
 		public override TagCompound Save() => new TagCompound

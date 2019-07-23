@@ -5,7 +5,6 @@ using ContainerLibrary;
 using Microsoft.Xna.Framework;
 using QuantumStorage.TileEntities;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace QuantumStorage.UI
 {
@@ -13,8 +12,6 @@ namespace QuantumStorage.UI
 	{
 		public ItemHandler Handler => Container.Handler;
 		public string GetTexture(Item item) => "QuantumStorage/Textures/Items/QEChest";
-
-		private Frequency tempFrequency = new Frequency();
 
 		private UIButton[] buttonsFrequency;
 		private UITextButton buttonInitialize;
@@ -46,7 +43,7 @@ namespace QuantumStorage.UI
 				for (int i = 0; i < 3; i++)
 				{
 					int pos = i;
-					buttonsFrequency[i] = new UIButton(ModContent.GetTexture("QuantumStorage/Textures/UI/EmptySocket"))
+					buttonsFrequency[i] = new UIButton(QuantumStorage.textureEmptySocket)
 					{
 						Size = new Vector2(16, 20),
 						HAlign = 0.17f + 0.33f * pos,
@@ -54,11 +51,13 @@ namespace QuantumStorage.UI
 					};
 					buttonsFrequency[i].OnClick += (evt, element) =>
 					{
-						if (Utility.ValidItems.ContainsKey(Main.mouseItem.type) && tempFrequency != null)
+						if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
 						{
-							tempFrequency[pos] = Utility.ValidItems[Main.mouseItem.type];
-							buttonsFrequency[pos].texture = ModContent.GetTexture("QuantumStorage/Textures/Tiles/GemMiddle_0");
-							buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)tempFrequency[pos], 0, 8, 10);
+							// todo: decrement main.mouseitem stack
+
+							Container.frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
+							buttonsFrequency[pos].texture = QuantumStorage.textureGemsMiddle;
+							buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10);
 						}
 					};
 					Append(buttonsFrequency[i]);
@@ -73,9 +72,7 @@ namespace QuantumStorage.UI
 				};
 				buttonInitialize.OnClick += (evt, element) =>
 				{
-					if (!tempFrequency.IsSet) return;
-
-					Container.frequency = (Frequency)tempFrequency.Clone();
+					if (!Container.frequency.IsSet) return;
 
 					for (int i = 0; i < 3; i++) RemoveChild(buttonsFrequency[i]);
 					RemoveChild(buttonInitialize);

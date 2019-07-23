@@ -81,23 +81,18 @@ namespace QuantumStorage.Items
 
 		public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
-			if (!frequency.IsSet) return;
-
-			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(2, 12) * scale, new Rectangle(6 * (int)frequency[0], 0, 6, 10), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position + new Vector2(12, 12) * scale, new Rectangle(8 * (int)frequency[1], 0, 8, 10), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(24, 12) * scale, new Rectangle(6 * (int)frequency[2], 0, 6, 10), Color.White, 0f, origin, scale, SpriteEffects.FlipHorizontally, 0f);
+			if (frequency[0] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(2, 12) * scale, new Rectangle(6 * (int)frequency[0], 0, 6, 10), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
+			if (frequency[1] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position + new Vector2(12, 12) * scale, new Rectangle(8 * (int)frequency[1], 0, 8, 10), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
+			if (frequency[2] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(24, 12) * scale, new Rectangle(6 * (int)frequency[2], 0, 6, 10), Color.White, 0f, origin, scale, SpriteEffects.FlipHorizontally, 0f);
 		}
 
 		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
-			if (!frequency.IsSet) return;
+			Vector2 position = new Vector2(item.position.X - Main.screenPosition.X + item.width * 0.5f, item.position.Y - Main.screenPosition.Y + item.height - 17f + 2f);
 
-			Vector2 position = item.position - Main.screenPosition;
-			Vector2 origin = new Vector2(16, 19);
-
-			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + origin, new Rectangle(6 * (int)frequency[0], 0, 6, 10), alphaColor, rotation, origin - new Vector2(2, 14), scale, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position + origin, new Rectangle(8 * (int)frequency[1], 0, 8, 10), alphaColor, rotation, origin - new Vector2(12, 14), scale, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + origin, new Rectangle(6 * (int)frequency[2], 0, 6, 10), alphaColor, rotation, origin - new Vector2(24, 14), scale, SpriteEffects.FlipHorizontally, 0f);
+			if (frequency[0] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsSide, position, new Rectangle(6 * (int)frequency[0], 0, 6, 10), alphaColor, rotation, new Vector2(14, 5), scale, SpriteEffects.None, 0f);
+			if (frequency[1] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position, new Rectangle(8 * (int)frequency[1], 0, 8, 10), alphaColor, rotation, new Vector2(4, 5), scale, SpriteEffects.None, 0f);
+			if (frequency[2] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsSide, position, new Rectangle(6 * (int)frequency[2], 0, 6, 10), alphaColor, rotation, new Vector2(-8, 5), scale, SpriteEffects.FlipHorizontally, 0f);
 		}
 
 		public override TagCompound Save() => new TagCompound
