@@ -55,7 +55,7 @@ namespace QuantumStorage.Items
 			clone.frequency = (Frequency)frequency.Clone();
 			return clone;
 		}
-		
+
 		public override void SetDefaults()
 		{
 			ID = Guid.NewGuid();
@@ -131,7 +131,7 @@ namespace QuantumStorage.Items
 		}
 
 		public override bool ConsumeItem(Player player) => false;
-		
+
 		public override bool CanRightClick() => true;
 
 		public override void RightClick(Player player)

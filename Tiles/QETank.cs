@@ -39,7 +39,7 @@ namespace QuantumStorage.Tiles
 
 			Main.LocalPlayer.noThrow = 2;
 
-			if (qeTank.Handler == null)BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
+			if (qeTank.Handler == null) BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
 			else
 			{
 				Item item = Main.LocalPlayer.GetHeldItem();

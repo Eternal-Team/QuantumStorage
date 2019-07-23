@@ -15,8 +15,6 @@ namespace QuantumStorage
 		internal static Texture2D textureRingSmall;
 		internal static Texture2D textureRingBig;
 
-		// todo: syncing
-
 		/*
 		Bag and bucket need tooltip info
 

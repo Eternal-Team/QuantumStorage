@@ -25,8 +25,8 @@ namespace QuantumStorage
 	{
 		public override TagCompound Serialize(ItemPair value) => new TagCompound
 		{
-			["Frequency"]=value.Frequency,
-			["Items"]=value.Handler
+			["Frequency"] = value.Frequency,
+			["Items"] = value.Handler
 		};
 
 		public override ItemPair Deserialize(TagCompound tag)

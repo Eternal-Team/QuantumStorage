@@ -2,6 +2,7 @@
 using BaseLibrary.UI;
 using ContainerLibrary;
 using System;
+using System.IO;
 using System.Linq;
 using Terraria.Audio;
 using Terraria.ID;
@@ -53,6 +54,18 @@ namespace QuantumStorage.TileEntities
 		{
 			ID = Guid.Parse(tag.GetString("ID"));
 			frequency = tag.Get<Frequency>("Frequency");
+		}
+
+		public override void NetSend(BinaryWriter writer, bool lightSend)
+		{
+			writer.Write(ID.ToString());
+			writer.Write(frequency);
+		}
+
+		public override void NetReceive(BinaryReader reader, bool lightReceive)
+		{
+			ID = Guid.Parse(reader.ReadString());
+			frequency = reader.ReadFrequency();
 		}
 	}
 }

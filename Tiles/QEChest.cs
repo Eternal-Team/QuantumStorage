@@ -67,7 +67,7 @@ namespace QuantumStorage.Tiles
 			BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(qeChest);
 
 			for (int index = 0; index < 3; index++) Item.NewItem(i * 16, j * 16, 32, 32, Utility.ColorToItem(qeChest.frequency[index]));
-			
+
 			Item.NewItem(i * 16, j * 16, 32, 32, mod.ItemType<Items.QEChest>());
 			qeChest.Kill(i, j);
 		}

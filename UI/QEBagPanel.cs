@@ -5,6 +5,7 @@ using ContainerLibrary;
 using Microsoft.Xna.Framework;
 using QuantumStorage.Items;
 using Terraria;
+using Terraria.ID;
 
 namespace QuantumStorage.UI
 {
@@ -69,6 +70,7 @@ namespace QuantumStorage.UI
 				for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
 
 				Container.frequency = new Frequency();
+				if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.SyncItem, -1, -1, null, Container.item.whoAmI, 1f);
 
 				RemoveChild(GridItems);
 
@@ -118,6 +120,7 @@ namespace QuantumStorage.UI
 						Container.frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
 						buttonsFrequency[pos].texture = QuantumStorage.textureGemsMiddle;
 						buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10);
+						if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.SyncItem, -1, -1, null, Container.item.whoAmI, 1f);
 
 						Main.mouseItem.stack--;
 						if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();

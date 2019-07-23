@@ -5,6 +5,8 @@ using ContainerLibrary;
 using Microsoft.Xna.Framework;
 using QuantumStorage.TileEntities;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace QuantumStorage.UI
@@ -49,6 +51,7 @@ namespace QuantumStorage.UI
 				for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
 
 				Container.frequency = new Frequency();
+				if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((TileEntity)Container).ID, Container.Position.X, Container.Position.Y);
 
 				RemoveChild(TankFluid);
 
@@ -99,6 +102,7 @@ namespace QuantumStorage.UI
 						Container.frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
 						buttonsFrequency[pos].texture = QuantumStorage.textureGemsMiddle;
 						buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10);
+						if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((TileEntity)Container).ID, Container.Position.X, Container.Position.Y);
 
 						Main.mouseItem.stack--;
 						if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();
