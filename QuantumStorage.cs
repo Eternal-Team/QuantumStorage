@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -7,6 +8,8 @@ namespace QuantumStorage
 {
 	public class QuantumStorage : Mod
 	{
+		internal static QuantumStorage Instance;
+
 		internal static Texture2D textureGemsSide;
 		internal static Texture2D textureGemsMiddle;
 		internal static Texture2D textureRingSmall;
@@ -16,16 +19,15 @@ namespace QuantumStorage
 
 		/*
 		Bag and bucket need tooltip info
-		Black hole doesn't work with quantum bag
-		Invs don't close when away from the storage.
-		way to reinitialize storages
 
 		PUMPS - Terra Firma
 		*/
 
 		public override void Load()
 		{
-			Utility.Initialize();
+			Instance = this;
+
+			Utility.Load();
 
 			TagSerializer.AddSerializer(new FrequencySerializer());
 
@@ -39,5 +41,7 @@ namespace QuantumStorage
 		}
 
 		public override void Unload() => BaseLibrary.Utility.UnloadNullableTypes();
+
+		public override void HandlePacket(BinaryReader reader, int whoAmI) => Net.HandlePacket(reader, whoAmI);
 	}
 }

@@ -9,7 +9,7 @@ namespace QuantumStorage
 	{
 		internal static Dictionary<int, Colors> ValidItems;
 
-		internal static void Initialize()
+		internal static void Load()
 		{
 			ValidItems = new Dictionary<int, Colors>
 			{
