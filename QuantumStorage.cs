@@ -7,7 +7,6 @@ namespace QuantumStorage
 {
 	public class QuantumStorage : Mod
 	{
-		internal static Texture2D textureEmptySocket;
 		internal static Texture2D textureGemsSide;
 		internal static Texture2D textureGemsMiddle;
 		internal static Texture2D textureRingSmall;
@@ -16,11 +15,8 @@ namespace QuantumStorage
 		// todo: syncing
 
 		/*
-		gems not consumed.
 		Bag and bucket need tooltip info
-		Right click kills the bag/bucket. Not always?
 		Black hole doesn't work with quantum bag
-		Gem tiles offset
 		Invs don't close when away from the storage.
 		way to reinitialize storages
 
@@ -35,7 +31,6 @@ namespace QuantumStorage
 
 			if (!Main.dedServ)
 			{
-				textureEmptySocket = ModContent.GetTexture("QuantumStorage/Textures/UI/EmptySocket");
 				textureGemsMiddle = ModContent.GetTexture("QuantumStorage/Textures/Tiles/GemMiddle_0");
 				textureGemsSide = ModContent.GetTexture("QuantumStorage/Textures/Tiles/GemSide_0");
 				textureRingSmall = ModContent.GetTexture("QuantumStorage/Textures/Items/RingSmall");

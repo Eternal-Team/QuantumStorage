@@ -5,12 +5,21 @@ using ContainerLibrary;
 using Microsoft.Xna.Framework;
 using QuantumStorage.TileEntities;
 using Terraria;
+using Terraria.Localization;
 
 namespace QuantumStorage.UI
 {
 	public class QETankPanel : BaseUIPanel<QETank>
 	{
 		private UITank tankFluid;
+
+		private UITank TankFluid => tankFluid ?? (tankFluid = new UITank(Container)
+		{
+			Width = (40, 0),
+			Height = (-44, 1),
+			Top = (36, 0),
+			HAlign = 0.5f
+		});
 
 		private UIButton[] buttonsFrequency;
 		private UITextButton buttonInitialize;
@@ -21,11 +30,33 @@ namespace QuantumStorage.UI
 			Height = (172, 0);
 			this.Center();
 
-			UIText textLabel = new UIText("Quantum Entangled Tank")
+			#region Top
+
+			UIText textLabel = new UIText(Language.GetText("Mods.QuantumStorage.MapObject.QETank"))
 			{
 				HAlign = 0.5f
 			};
 			Append(textLabel);
+
+			UITextButton buttonReset = new UITextButton("R")
+			{
+				Size = new Vector2(20),
+				RenderPanel = false
+			};
+			buttonReset.GetHoverText += () => "Reset";
+			buttonReset.OnClick += (evt, element) =>
+			{
+				for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
+
+				Container.frequency = new Frequency();
+
+				RemoveChild(TankFluid);
+
+				InitializeFrequencySelection();
+				for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
+				Append(buttonInitialize);
+			};
+			Append(buttonReset);
 
 			UITextButton buttonClose = new UITextButton("X")
 			{
@@ -33,66 +64,64 @@ namespace QuantumStorage.UI
 				Left = (-20, 1),
 				RenderPanel = false
 			};
+			buttonClose.GetHoverText += () => "Close";
 			buttonClose.OnClick += (evt, element) => BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(Container);
 			Append(buttonClose);
 
+			#endregion
+
 			if (!Container.frequency.IsSet)
 			{
-				buttonsFrequency = new UIButton[3];
-				for (int i = 0; i < 3; i++)
-				{
-					int pos = i;
-					buttonsFrequency[i] = new UIButton(QuantumStorage.textureEmptySocket)
-					{
-						Size = new Vector2(16, 20),
-						HAlign = 0.17f + 0.33f * pos,
-						VAlign = 0.5f
-					};
-					buttonsFrequency[i].OnClick += (evt, element) =>
-					{
-						if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
-						{
-							// todo: decrement main.mouseitem stack
+				InitializeFrequencySelection();
 
-							Container.frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
-							buttonsFrequency[pos].texture = QuantumStorage.textureGemsMiddle;
-							buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10);
-						}
-					};
-					Append(buttonsFrequency[i]);
-				}
-
-				buttonInitialize = new UITextButton("Initialize")
-				{
-					Width = (-64, 1),
-					Height = (40, 0),
-					VAlign = 1,
-					HAlign = 0.5f
-				};
-				buttonInitialize.OnClick += (evt, element) =>
-				{
-					if (!Container.frequency.IsSet) return;
-
-					for (int i = 0; i < 3; i++) RemoveChild(buttonsFrequency[i]);
-					RemoveChild(buttonInitialize);
-
-					AddTank();
-				};
+				for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
 				Append(buttonInitialize);
 			}
-			else AddTank();
+			else Append(TankFluid);
 		}
 
-		private void AddTank()
+		private void InitializeFrequencySelection()
 		{
-			tankFluid = new UITank(Container)
+			buttonsFrequency = new UIButton[3];
+			for (int i = 0; i < 3; i++)
 			{
-				Width = (40, 0),
-				Height = (-44, 1),
-				Top = (36, 0),
+				int pos = i;
+				buttonsFrequency[i] = new UIButton(QuantumStorage.textureGemsMiddle, new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10))
+				{
+					Size = new Vector2(16, 20),
+					HAlign = 0.17f + 0.33f * pos,
+					VAlign = 0.5f
+				};
+				buttonsFrequency[i].OnClick += (evt, element) =>
+				{
+					if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
+					{
+						Container.frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
+						buttonsFrequency[pos].texture = QuantumStorage.textureGemsMiddle;
+						buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10);
+
+						Main.mouseItem.stack--;
+						if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();
+					}
+				};
+			}
+
+			buttonInitialize = new UITextButton("Initialize")
+			{
+				Width = (-64, 1),
+				Height = (40, 0),
+				VAlign = 1,
 				HAlign = 0.5f
 			};
-			Append(tankFluid);
+			buttonInitialize.OnClick += (evt, element) =>
+			{
+				if (!Container.frequency.IsSet) return;
+
+				for (int i = 0; i < 3; i++) RemoveChild(buttonsFrequency[i]);
+				RemoveChild(buttonInitialize);
+
+				Append(TankFluid);
+			};
 		}
 	}
 }

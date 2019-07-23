@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria.ID;
 
 namespace QuantumStorage
@@ -21,6 +22,8 @@ namespace QuantumStorage
 				{ItemID.Amber, Colors.Orange}
 			};
 		}
+
+		internal static int ColorToItem(Colors color) => color == Colors.None ? 0 : ValidItems.First(pair => pair.Value == color).Key;
 
 		internal static void Write(this BinaryWriter writer, Frequency frequency)
 		{

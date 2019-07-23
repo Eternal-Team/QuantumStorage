@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ModLoader;
 using Terraria.ObjectData;
 
 namespace QuantumStorage.Tiles
@@ -26,9 +25,7 @@ namespace QuantumStorage.Tiles
 			TileObjectData.addTile(Type);
 			disableSmartCursor = true;
 
-			ModTranslation name = CreateMapEntryName();
-			name.SetDefault("Quantum Entangled Chest");
-			AddMapEntry(Color.Purple, name);
+			AddMapEntry(Color.Purple);
 		}
 
 		public override void RightClick(int i, int j)
@@ -59,9 +56,9 @@ namespace QuantumStorage.Tiles
 
 			Vector2 position = new Point16(i, j).ToScreenCoordinates();
 
-			if (qeChest.frequency[0] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(5, 9), new Rectangle(6 * (int)qeChest.frequency[0], 0, 6, 10), Color.White, 0f, new Vector2(3, 5), 1f, SpriteEffects.None, 0f);
-			if (qeChest.frequency[1] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position + new Vector2(12, 4), new Rectangle(8 * (int)qeChest.frequency[1], 0, 8, 10), Color.White);
-			if (qeChest.frequency[2] != Colors.None) spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(24, 4), new Rectangle(6 * (int)qeChest.frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.FlipHorizontally, 0f);
+			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(5, 9), new Rectangle(6 * (int)qeChest.frequency[0], 0, 6, 10), Color.White, 0f, new Vector2(3, 5), 1f, SpriteEffects.None, 0f);
+			spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position + new Vector2(12, 4), new Rectangle(8 * (int)qeChest.frequency[1], 0, 8, 10), Color.White);
+			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(24, 4), new Rectangle(6 * (int)qeChest.frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.FlipHorizontally, 0f);
 		}
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
