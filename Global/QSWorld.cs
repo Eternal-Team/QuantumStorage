@@ -26,14 +26,14 @@ namespace QuantumStorage
 		public override TagCompound Serialize(ItemPair value) => new TagCompound
 		{
 			["Frequency"] = value.Frequency,
-			["Items"] = value.Handler
+			["Items"] = value.Handler.Save()
 		};
 
 		public override ItemPair Deserialize(TagCompound tag)
 		{
 			ItemPair pair = QSWorld.baseItemPair.Clone();
 			pair.Frequency = tag.Get<Frequency>("Frequency");
-			pair.Handler = tag.Get<ItemHandler>("Items");
+			pair.Handler.Load(tag.Get<TagCompound>("Items"));
 			return pair;
 		}
 	}
@@ -57,16 +57,14 @@ namespace QuantumStorage
 		public override TagCompound Serialize(FluidPair value) => new TagCompound
 		{
 			["Frequency"] = value.Frequency,
-			["Fluids"] = value.Handler
+			["Fluids"] = value.Handler.Save()
 		};
 
 		public override FluidPair Deserialize(TagCompound tag)
 		{
-			FluidPair pair = new FluidPair
-			{
-				Frequency = tag.Get<Frequency>("Frequency"),
-				Handler = tag.Get<FluidHandler>("Fluids")
-			};
+			FluidPair pair = QSWorld.baseFluidPair.Clone();
+			pair.Frequency = tag.Get<Frequency>("Frequency");
+			pair.Handler.Load(tag.Get<TagCompound>("Fluids"));
 			return pair;
 		}
 	}
