@@ -69,6 +69,8 @@ namespace QuantumStorage.Tiles
 
 				fluid.volume -= 255;
 				if (fluid.volume <= 0) fluid = null;
+
+				qeTank.Handler.OnContentsChanged?.Invoke(0);
 			}
 			else if (item.type == ItemID.WaterBucket)
 			{
@@ -78,6 +80,8 @@ namespace QuantumStorage.Tiles
 
 				fluid.volume += 255;
 				item.stack--;
+				qeTank.Handler.OnContentsChanged?.Invoke(0);
+				
 				if (item.stack <= 0) item.TurnToAir();
 				Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
 			}
@@ -88,6 +92,8 @@ namespace QuantumStorage.Tiles
 				if (fluid == null) fluid = new Lava();
 
 				fluid.volume += 255;
+				qeTank.Handler.OnContentsChanged?.Invoke(0);
+
 				item.stack--;
 				if (item.stack <= 0) item.TurnToAir();
 				Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
@@ -99,6 +105,8 @@ namespace QuantumStorage.Tiles
 				if (fluid == null) fluid = new Honey();
 
 				fluid.volume += 255;
+				qeTank.Handler.OnContentsChanged?.Invoke(0);
+
 				item.stack--;
 				if (item.stack <= 0) item.TurnToAir();
 				Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
