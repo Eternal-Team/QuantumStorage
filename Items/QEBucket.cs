@@ -36,6 +36,7 @@ namespace QuantumStorage.Items
 				if (pair != null) return pair.Handler;
 
 				pair = QSWorld.baseFluidPair.Clone();
+				pair.Frequency = frequency;
 
 				QSWorld.Instance.QEFluidHandlers.Add(pair);
 				Net.SendFluidFrequency(frequency);
@@ -70,6 +71,8 @@ namespace QuantumStorage.Items
 
 		public override bool UseItem(Player player)
 		{
+			if (Handler == null) return false;
+
 			ref ModFluid fluid = ref Handler.GetFluidInSlotByRef(0);
 			int targetX = Player.tileTargetX;
 			int targetY = Player.tileTargetY;
@@ -108,7 +111,7 @@ namespace QuantumStorage.Items
 				{
 					Main.PlaySound(19, (int)player.position.X, (int)player.position.Y);
 
-					if (fluid == null) fluid = FluidLoader.GetFluid(FluidLibrary.FluidLibrary.GetFluidNameByID(tile.liquidType()));
+					if (fluid == null) fluid = FluidLoader.GetFluid(FluidLibrary.FluidLibrary.GetFluidNameByID(tile.liquidType())).Clone();
 
 					int drain = Math.Min(tile.liquid, Handler.GetSlotLimit(0) - fluid.volume);
 					fluid.volume += drain;
@@ -122,7 +125,7 @@ namespace QuantumStorage.Items
 					}
 
 					WorldGen.SquareTileFrame(targetX, targetY, false);
-					if (Main.netMode == 1) NetMessage.sendWater(targetX, targetY);
+					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.sendWater(targetX, targetY);
 					else Liquid.AddWater(targetX, targetY);
 				}
 			}

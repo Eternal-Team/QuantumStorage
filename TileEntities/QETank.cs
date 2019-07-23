@@ -31,6 +31,7 @@ namespace QuantumStorage.TileEntities
 				if (pair != null) return pair.Handler;
 
 				pair = QSWorld.baseFluidPair.Clone();
+				pair.Frequency = frequency;
 
 				QSWorld.Instance.QEFluidHandlers.Add(pair);
 				Net.SendFluidFrequency(frequency);

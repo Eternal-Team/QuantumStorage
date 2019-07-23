@@ -31,6 +31,7 @@ namespace QuantumStorage.TileEntities
 				if (pair != null) return pair.Handler;
 
 				pair = QSWorld.baseItemPair.Clone();
+				pair.Frequency = frequency;
 
 				QSWorld.Instance.QEItemHandlers.Add(pair);
 				Net.SendItemFrequency(frequency);

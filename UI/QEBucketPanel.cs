@@ -46,6 +46,8 @@ namespace QuantumStorage.UI
 			buttonReset.GetHoverText += () => "Reset";
 			buttonReset.OnClick += (evt, element) =>
 			{
+				if (!Container.frequency.IsSet) return;
+
 				for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
 
 				Container.frequency = new Frequency();
@@ -122,7 +124,7 @@ namespace QuantumStorage.UI
 				for (int i = 0; i < 3; i++) RemoveChild(buttonsFrequency[i]);
 				RemoveChild(buttonInitialize);
 
-				Append(tankFluid);
+				Append(TankFluid);
 			};
 		}
 	}

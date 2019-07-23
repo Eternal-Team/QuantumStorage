@@ -39,69 +39,71 @@ namespace QuantumStorage.Tiles
 
 			Main.LocalPlayer.noThrow = 2;
 
-			if (qeTank.Handler == null) BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
-			else
+			if (qeTank.Handler == null)
 			{
-				Item item = Main.LocalPlayer.GetHeldItem();
-				ref ModFluid fluid = ref qeTank.Handler.GetFluidInSlotByRef(0);
-				if (item.type == ItemID.EmptyBucket)
-				{
-					if (fluid == null || fluid.volume < 255) return;
-
-					switch (fluid.Name)
-					{
-						case "Water":
-							Main.LocalPlayer.PutItemInInventory(ItemID.WaterBucket);
-							break;
-						case "Lava":
-							Main.LocalPlayer.PutItemInInventory(ItemID.LavaBucket);
-							break;
-						case "Honey":
-							Main.LocalPlayer.PutItemInInventory(ItemID.HoneyBucket);
-							break;
-					}
-
-					item.stack--;
-					if (item.stack <= 0) item.TurnToAir();
-
-					fluid.volume -= 255;
-					if (fluid.volume <= 0) fluid = null;
-				}
-				else if (item.type == ItemID.WaterBucket)
-				{
-					if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Water>()) || fluid.volume > 3 * 255)) return;
-
-					if (fluid == null) fluid = FluidLoader.GetFluid<Water>().Clone();
-
-					fluid.volume += 255;
-					item.stack--;
-					if (item.stack <= 0) item.TurnToAir();
-					Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
-				}
-				else if (item.type == ItemID.LavaBucket)
-				{
-					if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Lava>()) || fluid.volume > 3 * 255)) return;
-
-					if (fluid == null) fluid = new Lava();
-
-					fluid.volume += 255;
-					item.stack--;
-					if (item.stack <= 0) item.TurnToAir();
-					Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
-				}
-				else if (item.type == ItemID.HoneyBucket)
-				{
-					if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Honey>()) || fluid.volume > 3 * 255)) return;
-
-					if (fluid == null) fluid = new Honey();
-
-					fluid.volume += 255;
-					item.stack--;
-					if (item.stack <= 0) item.TurnToAir();
-					Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
-				}
-				else BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
+				BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
+				return;
 			}
+
+			Item item = Main.LocalPlayer.GetHeldItem();
+			ref ModFluid fluid = ref qeTank.Handler.GetFluidInSlotByRef(0);
+			if (item.type == ItemID.EmptyBucket)
+			{
+				if (fluid == null || fluid.volume < 255) return;
+
+				switch (fluid.Name)
+				{
+					case "Water":
+						Main.LocalPlayer.PutItemInInventory(ItemID.WaterBucket);
+						break;
+					case "Lava":
+						Main.LocalPlayer.PutItemInInventory(ItemID.LavaBucket);
+						break;
+					case "Honey":
+						Main.LocalPlayer.PutItemInInventory(ItemID.HoneyBucket);
+						break;
+				}
+
+				item.stack--;
+				if (item.stack <= 0) item.TurnToAir();
+
+				fluid.volume -= 255;
+				if (fluid.volume <= 0) fluid = null;
+			}
+			else if (item.type == ItemID.WaterBucket)
+			{
+				if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Water>()) || fluid.volume > 3 * 255)) return;
+
+				if (fluid == null) fluid = FluidLoader.GetFluid<Water>().Clone();
+
+				fluid.volume += 255;
+				item.stack--;
+				if (item.stack <= 0) item.TurnToAir();
+				Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
+			}
+			else if (item.type == ItemID.LavaBucket)
+			{
+				if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Lava>()) || fluid.volume > 3 * 255)) return;
+
+				if (fluid == null) fluid = new Lava();
+
+				fluid.volume += 255;
+				item.stack--;
+				if (item.stack <= 0) item.TurnToAir();
+				Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
+			}
+			else if (item.type == ItemID.HoneyBucket)
+			{
+				if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Honey>()) || fluid.volume > 3 * 255)) return;
+
+				if (fluid == null) fluid = new Honey();
+
+				fluid.volume += 255;
+				item.stack--;
+				if (item.stack <= 0) item.TurnToAir();
+				Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
+			}
+			else BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
 		}
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
