@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -29,11 +30,16 @@ namespace QuantumStorage.Items
 		{
 			get
 			{
-				if (QSWorld.Instance.QEFluidHandlers.TryGetValue(frequency, out FluidHandler handler)) return handler;
+				if (!frequency.IsSet) return null;
 
-				handler = QSWorld.baseFluidHandler.Clone();
-				QSWorld.Instance.QEFluidHandlers.Add((Frequency)frequency.Clone(), handler);
-				return handler;
+				FluidPair pair = QSWorld.Instance.QEFluidHandlers.FirstOrDefault(fluidPair => Equals(fluidPair.Frequency, frequency));
+				if (pair != null) return pair.Handler;
+
+				pair = QSWorld.baseFluidPair.Clone();
+
+				QSWorld.Instance.QEFluidHandlers.Add(pair);
+				Net.SendFluidFrequency(frequency);
+				return pair.Handler;
 			}
 		}
 

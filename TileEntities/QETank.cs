@@ -2,6 +2,7 @@
 using BaseLibrary.UI;
 using ContainerLibrary;
 using System;
+using System.Linq;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
@@ -25,11 +26,14 @@ namespace QuantumStorage.TileEntities
 			{
 				if (!frequency.IsSet) return null;
 
-				if (QSWorld.Instance.QEFluidHandlers.TryGetValue(frequency, out FluidHandler handler)) return handler;
+				FluidPair pair = QSWorld.Instance.QEFluidHandlers.FirstOrDefault(fluidPair => Equals(fluidPair.Frequency, frequency));
+				if (pair != null) return pair.Handler;
 
-				FluidHandler temp = QSWorld.baseFluidHandler.Clone();
-				QSWorld.Instance.QEFluidHandlers.Add((Frequency)frequency.Clone(), temp);
-				return temp;
+				pair = QSWorld.baseFluidPair.Clone();
+
+				QSWorld.Instance.QEFluidHandlers.Add(pair);
+				Net.SendFluidFrequency(frequency);
+				return pair.Handler;
 			}
 		}
 

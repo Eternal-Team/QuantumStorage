@@ -30,6 +30,8 @@ namespace QuantumStorage
 			Utility.Load();
 
 			TagSerializer.AddSerializer(new FrequencySerializer());
+			TagSerializer.AddSerializer(new ItemPairSerializer());
+			TagSerializer.AddSerializer(new FluidPairSerializer());
 
 			if (!Main.dedServ)
 			{
