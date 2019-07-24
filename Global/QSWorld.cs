@@ -93,7 +93,7 @@ namespace QuantumStorage
 			{
 				Handler = new FluidHandler()
 			};
-			baseItemPair.OnContentsChanged += (frequency, slot) => Net.SendFluid(frequency, slot);
+			baseFluidPair.OnContentsChanged += (frequency, slot) => Net.SendFluid(frequency, slot);
 			baseFluidPair.Handler.GetSlotLimit += slot => 255 * 4;
 
 			QEItemHandlers = new List<ItemPair>();

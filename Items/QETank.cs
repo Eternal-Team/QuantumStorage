@@ -7,12 +7,7 @@ namespace QuantumStorage.Items
 	public class QETank : BaseItem
 	{
 		public override string Texture => "QuantumStorage/Textures/Items/QETank";
-
-		public override void SetStaticDefaults()
-		{
-			Tooltip.SetDefault("Stores 4B of fluid\nRight-click on the slots with gems to change frequency");
-		}
-
+		
 		public override void SetDefaults()
 		{
 			item.width = 16;

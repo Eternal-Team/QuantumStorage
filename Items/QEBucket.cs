@@ -94,6 +94,7 @@ namespace QuantumStorage.Items
 							int volume = Math.Min(fluid.volume, 255 - tile.liquid);
 							tile.liquid += (byte)volume;
 							fluid.volume -= volume;
+							// todo: use Shrink or Grow
 							if (fluid.volume <= 0) fluid = null;
 
 							Handler.OnContentsChanged?.Invoke(0);

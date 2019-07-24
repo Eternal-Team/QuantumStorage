@@ -1,5 +1,6 @@
 ﻿using BaseLibrary;
 using BaseLibrary.Tiles;
+using ContainerLibrary;
 using FluidLibrary.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -67,10 +68,7 @@ namespace QuantumStorage.Tiles
 				item.stack--;
 				if (item.stack <= 0) item.TurnToAir();
 
-				fluid.volume -= 255;
-				if (fluid.volume <= 0) fluid = null;
-
-				qeTank.Handler.OnContentsChanged?.Invoke(0);
+				qeTank.Handler.Shrink(0, 255);
 			}
 			else if (item.type == ItemID.WaterBucket)
 			{
@@ -78,10 +76,9 @@ namespace QuantumStorage.Tiles
 
 				if (fluid == null) fluid = FluidLoader.GetFluid<Water>().Clone();
 
-				fluid.volume += 255;
-				item.stack--;
-				qeTank.Handler.OnContentsChanged?.Invoke(0);
+				qeTank.Handler.Grow(0, 255);
 				
+				item.stack--;
 				if (item.stack <= 0) item.TurnToAir();
 				Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
 			}
@@ -91,8 +88,7 @@ namespace QuantumStorage.Tiles
 
 				if (fluid == null) fluid = new Lava();
 
-				fluid.volume += 255;
-				qeTank.Handler.OnContentsChanged?.Invoke(0);
+				qeTank.Handler.Grow(0, 255);
 
 				item.stack--;
 				if (item.stack <= 0) item.TurnToAir();
@@ -104,8 +100,7 @@ namespace QuantumStorage.Tiles
 
 				if (fluid == null) fluid = new Honey();
 
-				fluid.volume += 255;
-				qeTank.Handler.OnContentsChanged?.Invoke(0);
+				qeTank.Handler.Grow(0, 255);
 
 				item.stack--;
 				if (item.stack <= 0) item.TurnToAir();

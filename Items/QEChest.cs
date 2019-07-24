@@ -8,11 +8,6 @@ namespace QuantumStorage.Items
 	{
 		public override string Texture => "QuantumStorage/Textures/Items/QEChest";
 
-		public override void SetStaticDefaults()
-		{
-			Tooltip.SetDefault("Stores 27 stacks of items\nRight-click on the slots with gems to change frequency");
-		}
-
 		public override void SetDefaults()
 		{
 			item.width = 16;
