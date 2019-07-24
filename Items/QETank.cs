@@ -7,7 +7,7 @@ namespace QuantumStorage.Items
 	public class QETank : BaseItem
 	{
 		public override string Texture => "QuantumStorage/Textures/Items/QETank";
-		
+
 		public override void SetDefaults()
 		{
 			item.width = 16;

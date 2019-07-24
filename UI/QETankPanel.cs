@@ -34,6 +34,7 @@ namespace QuantumStorage.UI
 
 			#region Top
 
+			// todo: fails to localize
 			UIText textLabel = new UIText(Language.GetText("Mods.QuantumStorage.MapObject.QETank"))
 			{
 				HAlign = 0.5f

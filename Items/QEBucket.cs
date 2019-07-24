@@ -98,7 +98,7 @@ namespace QuantumStorage.Items
 							if (fluid.volume <= 0) fluid = null;
 
 							Handler.OnContentsChanged?.Invoke(0);
-							
+
 							WorldGen.SquareTileFrame(targetX, targetY);
 
 							if (Main.netMode == 1) NetMessage.sendWater(targetX, targetY);
@@ -120,7 +120,7 @@ namespace QuantumStorage.Items
 					fluid.volume += drain;
 
 					tile.liquid -= (byte)drain;
-					
+
 					Handler.OnContentsChanged?.Invoke(0);
 
 					if (tile.liquid <= 0)

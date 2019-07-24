@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.ModLoader;
 using Terraria.ObjectData;
 
 namespace QuantumStorage.Tiles
@@ -25,9 +26,10 @@ namespace QuantumStorage.Tiles
 			TileObjectData.addTile(Type);
 			disableSmartCursor = true;
 
-			AddMapEntry(Color.Purple);
+			ModTranslation name = CreateMapEntryName();
+			AddMapEntry(Color.Purple, name);
 		}
-
+		// todo: smart cursor support
 		public override void RightClick(int i, int j)
 		{
 			TileEntities.QEChest qeChest = mod.GetTileEntity<TileEntities.QEChest>(i, j);

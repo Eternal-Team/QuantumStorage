@@ -30,7 +30,8 @@ namespace QuantumStorage.Tiles
 			disableSmartCursor = true;
 			mineResist = 5f;
 
-			AddMapEntry(Color.Purple);
+			ModTranslation name = CreateMapEntryName();
+			AddMapEntry(Color.Purple, name);
 		}
 
 		public override void RightClick(int i, int j)
@@ -77,7 +78,7 @@ namespace QuantumStorage.Tiles
 				if (fluid == null) fluid = FluidLoader.GetFluid<Water>().Clone();
 
 				qeTank.Handler.Grow(0, 255);
-				
+
 				item.stack--;
 				if (item.stack <= 0) item.TurnToAir();
 				Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
@@ -109,6 +110,7 @@ namespace QuantumStorage.Tiles
 			else BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
 		}
 
+		// todo: smart cursor support
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
 			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
@@ -118,7 +120,7 @@ namespace QuantumStorage.Tiles
 			Main.specY[nextSpecialDrawIndex] = j;
 			nextSpecialDrawIndex++;
 		}
-
+		// todo: fluids shouldnt glow
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
