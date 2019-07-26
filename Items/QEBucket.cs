@@ -1,4 +1,5 @@
-﻿using BaseLibrary.Items;
+﻿using BaseLibrary;
+using BaseLibrary.Items;
 using BaseLibrary.UI;
 using ContainerLibrary;
 using FluidLibrary.Content;
@@ -19,7 +20,7 @@ namespace QuantumStorage.Items
 	{
 		public override string Texture => "QuantumStorage/Textures/Items/QEBucket";
 
-		public Guid ID { get; set; }
+		public Guid UUID { get; set; }
 		public BaseUIPanel UI { get; set; }
 		public LegacySoundStyle CloseSound => SoundID.Item1;
 		public LegacySoundStyle OpenSound => SoundID.Item1;
@@ -52,14 +53,14 @@ namespace QuantumStorage.Items
 		public override ModItem Clone()
 		{
 			QEBucket clone = (QEBucket)base.Clone();
-			clone.ID = ID;
+			clone.UUID = UUID;
 			clone.frequency = (Frequency)frequency.Clone();
 			return clone;
 		}
 
 		public override void SetDefaults()
 		{
-			ID = Guid.NewGuid();
+			UUID = Guid.NewGuid();
 			item.useTime = 5;
 			item.useAnimation = 5;
 			item.useStyle = 1;
@@ -94,7 +95,7 @@ namespace QuantumStorage.Items
 							int volume = Math.Min(fluid.volume, 255 - tile.liquid);
 							tile.liquid += (byte)volume;
 
-							Handler.Shrink(0,volume);
+							Handler.Shrink(0, volume);
 
 							WorldGen.SquareTileFrame(targetX, targetY);
 
@@ -160,25 +161,25 @@ namespace QuantumStorage.Items
 
 		public override TagCompound Save() => new TagCompound
 		{
-			["ID"] = ID.ToString(),
+			["UUID"] = UUID,
 			["Frequency"] = frequency
 		};
 
 		public override void Load(TagCompound tag)
 		{
-			ID = Guid.Parse(tag.GetString("ID"));
+			UUID = tag.Get<Guid>("UUID");
 			frequency = tag.Get<Frequency>("Frequency");
 		}
 
 		public override void NetSend(BinaryWriter writer)
 		{
-			writer.Write(ID.ToString());
+			writer.Write(UUID);
 			writer.Write(frequency);
 		}
 
 		public override void NetRecieve(BinaryReader reader)
 		{
-			ID = Guid.Parse(reader.ReadString());
+			UUID = reader.ReadGUID();
 			frequency = reader.ReadFrequency();
 		}
 	}

@@ -1,4 +1,5 @@
-﻿using BaseLibrary.Tiles.TileEntites;
+﻿using BaseLibrary;
+using BaseLibrary.Tiles.TileEntites;
 using BaseLibrary.UI;
 using ContainerLibrary;
 using System;
@@ -14,7 +15,7 @@ namespace QuantumStorage.TileEntities
 	{
 		public override Type TileType => typeof(Tiles.QETank);
 
-		public Guid ID { get; set; }
+		public Guid UUID { get; set; }
 		public BaseUIPanel UI { get; set; }
 		public LegacySoundStyle CloseSound => SoundID.Item1;
 		public LegacySoundStyle OpenSound => SoundID.Item1;
@@ -41,31 +42,31 @@ namespace QuantumStorage.TileEntities
 
 		public QETank()
 		{
-			ID = Guid.NewGuid();
+			UUID = Guid.NewGuid();
 			frequency = new Frequency();
 		}
 
 		public override TagCompound Save() => new TagCompound
 		{
-			["ID"] = ID.ToString(),
+			["UUID"] = UUID,
 			["Frequency"] = frequency
 		};
 
 		public override void Load(TagCompound tag)
 		{
-			ID = Guid.Parse(tag.GetString("ID"));
+			UUID = tag.Get<Guid>("UUID");
 			frequency = tag.Get<Frequency>("Frequency");
 		}
 
 		public override void NetSend(BinaryWriter writer, bool lightSend)
 		{
-			writer.Write(ID.ToString());
+			writer.Write(UUID);
 			writer.Write(frequency);
 		}
 
 		public override void NetReceive(BinaryReader reader, bool lightReceive)
 		{
-			ID = Guid.Parse(reader.ReadString());
+			UUID = reader.ReadGUID();
 			frequency = reader.ReadFrequency();
 		}
 	}
