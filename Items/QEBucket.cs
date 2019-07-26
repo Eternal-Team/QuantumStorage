@@ -93,11 +93,8 @@ namespace QuantumStorage.Items
 
 							int volume = Math.Min(fluid.volume, 255 - tile.liquid);
 							tile.liquid += (byte)volume;
-							fluid.volume -= volume;
-							// todo: use Shrink or Grow
-							if (fluid.volume <= 0) fluid = null;
 
-							Handler.OnContentsChanged?.Invoke(0);
+							Handler.Shrink(0,volume);
 
 							WorldGen.SquareTileFrame(targetX, targetY);
 
@@ -117,11 +114,9 @@ namespace QuantumStorage.Items
 					if (fluid == null) fluid = FluidLoader.GetFluid(FluidLibrary.FluidLibrary.GetFluidNameByID(tile.liquidType())).Clone();
 
 					int drain = Math.Min(tile.liquid, Handler.GetSlotLimit(0) - fluid.volume);
-					fluid.volume += drain;
 
 					tile.liquid -= (byte)drain;
-
-					Handler.OnContentsChanged?.Invoke(0);
+					Handler.Grow(0, drain);
 
 					if (tile.liquid <= 0)
 					{

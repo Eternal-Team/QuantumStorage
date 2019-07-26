@@ -29,7 +29,7 @@ namespace QuantumStorage.Tiles
 			ModTranslation name = CreateMapEntryName();
 			AddMapEntry(Color.Purple, name);
 		}
-		// todo: smart cursor support
+		
 		public override void RightClick(int i, int j)
 		{
 			TileEntities.QEChest qeChest = mod.GetTileEntity<TileEntities.QEChest>(i, j);

@@ -110,7 +110,6 @@ namespace QuantumStorage.Tiles
 			else BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
 		}
 
-		// todo: smart cursor support
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
 			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
@@ -120,7 +119,7 @@ namespace QuantumStorage.Tiles
 			Main.specY[nextSpecialDrawIndex] = j;
 			nextSpecialDrawIndex++;
 		}
-		// todo: fluids shouldnt glow
+
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
 		{
 			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
@@ -140,7 +139,16 @@ namespace QuantumStorage.Tiles
 			{
 				Texture2D texture = ModContent.GetTexture(fluid.Texture);
 				Vector2 scale = new Vector2(20f / texture.Width, 14f / texture.Height * (fluid.volume / (float)qeTank.Handler.GetSlotLimit(0)));
-				spriteBatch.Draw(texture, position + new Vector2(6, 26), null, Color.White, 0f, new Vector2(0, texture.Height), scale, SpriteEffects.None, 0f);
+				Color color = fluid is Lava
+					? Color.White
+					: new[]
+					{
+						Lighting.GetColor(i, j),
+						Lighting.GetColor(i + 1, j),
+						Lighting.GetColor(i, j + 1),
+						Lighting.GetColor(i + 1, j + 1)
+					}.AverageColor();
+				spriteBatch.Draw(texture, position + new Vector2(6, 26), null, color, 0f, new Vector2(0, texture.Height), scale, SpriteEffects.None, 0f);
 			}
 		}
 
