@@ -64,7 +64,8 @@ namespace QuantumStorage.Items
 			item.useTime = 5;
 			item.useAnimation = 5;
 			item.useStyle = 1;
-			item.rare = 0;
+			item.rare = ItemRarityID.Pink;
+			item.value = Item.sellPrice(gold: 6);
 			item.autoReuse = true;
 		}
 
@@ -181,6 +182,16 @@ namespace QuantumStorage.Items
 		{
 			UUID = reader.ReadGUID();
 			frequency = reader.ReadFrequency();
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.EmptyBucket);
+			recipe.AddIngredient(ItemID.HallowedBar, 4);
+			recipe.AddIngredient(ItemID.SoulofSight, 5);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
 		}
 	}
 }

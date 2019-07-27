@@ -63,7 +63,8 @@ namespace QuantumStorage.Items
 			item.useTime = 5;
 			item.useAnimation = 5;
 			item.useStyle = 1;
-			item.rare = 0;
+			item.rare = ItemRarityID.Pink;
+			item.value = Item.sellPrice(gold: 6);
 		}
 
 		public override bool UseItem(Player player)
@@ -120,6 +121,16 @@ namespace QuantumStorage.Items
 		{
 			UUID = reader.ReadGUID();
 			frequency = reader.ReadFrequency();
+		}
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(mod);
+			recipe.AddIngredient(ItemID.Leather, 12);
+			recipe.AddIngredient(ItemID.HallowedBar, 4);
+			recipe.AddIngredient(ItemID.SoulofMight, 5);
+			recipe.SetResult(this);
+			recipe.AddRecipe();
 		}
 	}
 }

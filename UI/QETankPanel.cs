@@ -14,13 +14,14 @@ namespace QuantumStorage.UI
 	{
 		private UITank tankFluid;
 
-		private UITank TankFluid => tankFluid ?? (tankFluid = new UITank(Container)
-		{
-			Width = (40, 0),
-			Height = (-44, 1),
-			Top = (36, 0),
-			HAlign = 0.5f
-		});
+		private UITank TankFluid =>
+			tankFluid ?? (tankFluid = new UITank(Container)
+			{
+				Width = (40, 0),
+				Height = (-44, 1),
+				Top = (36, 0),
+				HAlign = 0.5f
+			});
 
 		private UIButton[] buttonsFrequency;
 		private UITextButton buttonInitialize;

@@ -137,8 +137,7 @@ namespace QuantumStorage.Tiles
 			ModFluid fluid = qeTank.Handler?.GetFluidInSlot(0);
 			if (fluid != null)
 			{
-				// todo: use FluidLoaders cache
-				Texture2D texture = ModContent.GetTexture(fluid.Texture);
+				Texture2D texture = FluidLoader.GetTexture(fluid.Name);
 				Vector2 scale = new Vector2(20f / texture.Width, 14f / texture.Height * (fluid.volume / (float)qeTank.Handler.GetSlotLimit(0)));
 				Color color = fluid is Lava
 					? Color.White

@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -14,12 +15,6 @@ namespace QuantumStorage
 		internal static Texture2D textureGemsMiddle;
 		internal static Texture2D textureRingSmall;
 		internal static Texture2D textureRingBig;
-
-		/*
-		Bag and bucket need tooltip info
-
-		PUMPS - Terra Firma
-		*/
 
 		public override void Load()
 		{
@@ -41,6 +36,14 @@ namespace QuantumStorage
 		}
 
 		public override void Unload() => BaseLibrary.Utility.UnloadNullableTypes();
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(this);
+			recipe.AddIngredient(ItemID.Vertebrae, 5);
+			recipe.SetResult(ItemID.Leather);
+			recipe.AddRecipe();
+		}
 
 		public override void HandlePacket(BinaryReader reader, int whoAmI) => Net.HandlePacket(reader, whoAmI);
 	}

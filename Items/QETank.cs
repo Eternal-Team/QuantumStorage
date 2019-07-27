@@ -1,4 +1,5 @@
 ﻿using BaseLibrary.Items;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,6 +20,8 @@ namespace QuantumStorage.Items
 			item.useTime = 10;
 			item.useStyle = 1;
 			item.consumable = true;
+			item.rare = ItemRarityID.Pink;
+			item.value = Item.sellPrice(gold: 8);
 			item.createTile = mod.TileType<Tiles.QETank>();
 		}
 
