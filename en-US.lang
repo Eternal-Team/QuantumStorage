@@ -1,13 +1,13 @@
 MapObject.QETank=Quantum Entangled Tank
 MapObject.QEChest=Quantum Entangled Chest
 
-ItemTooltip.QETank=Stores 4B of fluid\nRight-click on the slots with gems to change frequency
-ItemTooltip.QEChest=Stores 27 stacks of items\nRight-click on the slots with gems to change frequency
+ItemTooltip.QETank=Stores 4 buckets of fluid\nInsert the gems in the slots to set frequency
+ItemTooltip.QEChest=Stores 27 stacks of items\nInsert the gems in the slots to set frequency
 
 ItemName.QEBag=Quantum Entangled Bag
 ItemName.QEBucket=Quantum Entangled Bucket
 ItemName.QEChest=Quantum Entangled Chest
 ItemName.QETank=Quantum Entangled Tank
 
-ItemTooltip.QEBucket=Stores 4B of fluid\nRight-click on the slots with gems to change frequency
-ItemTooltip.QEBag=Stores 27 stacks of items\nRight-click on the slots with gems to change frequency
+ItemTooltip.QEBucket=Stores 4 buckets of fluid\nRight-click to open UI\nUse to pickup liquid, alt use to place it\nInsert the gems in the slots to set frequency
+ItemTooltip.QEBag=Stores 27 stacks of items\nRight-click or use to open UI\nInsert the gems in the slots to set frequency
