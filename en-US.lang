@@ -11,3 +11,7 @@ ItemName.QETank=Quantum Entangled Tank
 
 ItemTooltip.QEBucket=Stores 4 buckets of fluid\nRight-click to open UI\nUse to pickup liquid, alt use to place it\nInsert the gems in the slots to set frequency\n"Space will flow through your hands."
 ItemTooltip.QEBag=Stores 27 stacks of items\nRight-click or use to open UI\nInsert the gems in the slots to set frequency\n"Contains an infinite amount of possibilities."
+
+UI.Reset=Reset
+UI.InsertGems=Insert Gems
+UI.Initialize=Initialize

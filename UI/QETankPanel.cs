@@ -32,8 +32,6 @@ namespace QuantumStorage.UI
 			Height = (172, 0);
 			this.Center();
 
-			#region Top
-
 			UIText textLabel = new UIText(Language.GetText("Mods.QuantumStorage.MapObject.QETank"))
 			{
 				HAlign = 0.5f
@@ -45,21 +43,29 @@ namespace QuantumStorage.UI
 				Size = new Vector2(20),
 				RenderPanel = false
 			};
-			buttonReset.GetHoverText += () => "Reset";
+			buttonReset.GetHoverText += () => Language.GetTextValue("Mods.QuantumStorage.UI.Reset");
 			buttonReset.OnClick += (evt, element) =>
 			{
-				if (!Container.frequency.IsSet) return;
+				if (!Container.frequency.IsSet)
+				{
+					for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
 
-				for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
+					Container.frequency = new Frequency();
+					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, Container.ID, Container.Position.X, Container.Position.Y);
+				}
+				else
+				{
+					for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
 
-				Container.frequency = new Frequency();
-				if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, Container.ID, Container.Position.X, Container.Position.Y);
+					Container.frequency = new Frequency();
+					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, Container.ID, Container.Position.X, Container.Position.Y);
 
-				RemoveChild(TankFluid);
+					RemoveChild(TankFluid);
 
-				InitializeFrequencySelection();
-				for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
-				Append(buttonInitialize);
+					InitializeFrequencySelection();
+					for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
+					Append(buttonInitialize);
+				}
 			};
 			Append(buttonReset);
 
@@ -69,11 +75,9 @@ namespace QuantumStorage.UI
 				Left = (-20, 1),
 				RenderPanel = false
 			};
-			buttonClose.GetHoverText += () => "Close";
+			buttonClose.GetHoverText += () => Language.GetTextValue("Mods.BaseLibrary.UI.Close");
 			buttonClose.OnClick += (evt, element) => BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(Container);
 			Append(buttonClose);
-
-			#endregion
 
 			if (!Container.frequency.IsSet)
 			{
@@ -94,7 +98,7 @@ namespace QuantumStorage.UI
 				buttonsFrequency[i] = new UIButton(QuantumStorage.textureGemsMiddle, new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10))
 				{
 					Size = new Vector2(16, 20),
-					HAlign = 0.17f + 0.33f * pos,
+					HAlign = 0.4f + 0.1f * pos,
 					VAlign = 0.5f
 				};
 				buttonsFrequency[i].OnClick += (evt, element) =>
@@ -108,11 +112,13 @@ namespace QuantumStorage.UI
 
 						Main.mouseItem.stack--;
 						if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();
+
+						if (Container.frequency.IsSet) buttonInitialize.text = Language.GetTextValue("Mods.QuantumStorage.UI.Initialize");
 					}
 				};
 			}
 
-			buttonInitialize = new UITextButton("Initialize")
+			buttonInitialize = new UITextButton(Language.GetText("Mods.QuantumStorage.UI.InsertGems"))
 			{
 				Width = (-64, 1),
 				Height = (40, 0),
