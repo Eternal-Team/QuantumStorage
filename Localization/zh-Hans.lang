@@ -1,0 +1,17 @@
+MapObject.QETank=量子纠缠储液槽
+MapObject.QEChest=量子纠缠箱
+
+ItemTooltip.QETank=储存 4 桶液体\n在栏位中插入宝石来设置频率\n"一种用来观察多元宇宙的透镜."
+ItemTooltip.QEChest=储存 27 组物品\n在栏位中插入宝石来设置频率\n"在打开之前, 没人知道里面会有什么."
+
+ItemName.QEBag=量子纠缠袋
+ItemName.QEBucket=量子纠缠桶
+ItemName.QEChest=量子纠缠箱
+ItemName.QETank=量子纠缠储液槽
+
+ItemTooltip.QEBucket=储存 4 桶液体\n右键物品打开UI\n左键使用舀起液体, 右键使用放置液体\n在栏位中插入宝石来设置频率\n"空间将从你的手中流过."
+ItemTooltip.QEBag=储存 27 组物品\n右键或直接使用打开UI\n在栏位中插入宝石来设置频率\n"包含无限的可能性."
+
+UI.Reset=重置
+UI.InsertGems=插入宝石
+UI.Initialize=初始化
