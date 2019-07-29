@@ -4,6 +4,7 @@ using BaseLibrary.UI.Elements;
 using ContainerLibrary;
 using Microsoft.Xna.Framework;
 using QuantumStorage.Items;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -17,7 +18,7 @@ namespace QuantumStorage.UI
 
 		private UIButton[] buttonsFrequency;
 		private UITextButton buttonInitialize;
-
+		
 		private UIGrid<UIContainerSlot> gridItems;
 
 		private UIGrid<UIContainerSlot> GridItems
@@ -61,9 +62,9 @@ namespace QuantumStorage.UI
 			UITextButton buttonReset = new UITextButton("R")
 			{
 				Size = new Vector2(20),
-				RenderPanel = false
+				RenderPanel = false,
+				HoverText = Language.GetText("Mods.QuantumStorage.UI.Reset")
 			};
-			buttonReset.GetHoverText += () => Language.GetTextValue("Mods.QuantumStorage.UI.Reset");
 			buttonReset.OnClick += (evt, element) =>
 			{
 				if (!Container.frequency.IsSet)
@@ -93,9 +94,9 @@ namespace QuantumStorage.UI
 			{
 				Size = new Vector2(20),
 				Left = (-20, 1),
-				RenderPanel = false
-			};
-			buttonClose.GetHoverText += () => Language.GetTextValue("Mods.BaseLibrary.UI.Close");
+				RenderPanel = false,
+				HoverText = Language.GetText("Mods.BaseLibrary.UI.Close")
+		};
 			buttonClose.OnClick += (evt, element) => BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(Container);
 			Append(buttonClose);
 
@@ -138,7 +139,7 @@ namespace QuantumStorage.UI
 				};
 			}
 
-			buttonInitialize = new UITextButton(Language.GetTextValue("Mods.QuantumStorage.UI.InsertGems"))
+			buttonInitialize = new UITextButton(Language.GetText("Mods.QuantumStorage.UI.InsertGems"))
 			{
 				Width = (-64, 1),
 				Height = (40, 0),

@@ -41,9 +41,9 @@ namespace QuantumStorage.UI
 			UITextButton buttonReset = new UITextButton("R")
 			{
 				Size = new Vector2(20),
-				RenderPanel = false
+				RenderPanel = false,
+				HoverText = Language.GetText("Mods.QuantumStorage.UI.Reset")
 			};
-			buttonReset.GetHoverText += () => Language.GetTextValue("Mods.QuantumStorage.UI.Reset");
 			buttonReset.OnClick += (evt, element) =>
 			{
 				if (!Container.frequency.IsSet)
@@ -73,9 +73,9 @@ namespace QuantumStorage.UI
 			{
 				Size = new Vector2(20),
 				Left = (-20, 1),
-				RenderPanel = false
+				RenderPanel = false,
+				HoverText = Language.GetText("Mods.BaseLibrary.UI.Close")
 			};
-			buttonClose.GetHoverText += () => Language.GetTextValue("Mods.BaseLibrary.UI.Close");
 			buttonClose.OnClick += (evt, element) => BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(Container);
 			Append(buttonClose);
 

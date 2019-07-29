@@ -32,7 +32,7 @@ namespace QuantumStorage.Tiles
 
 		public override void RightClick(int i, int j)
 		{
-			TileEntities.QEChest qeChest = mod.GetTileEntity<TileEntities.QEChest>(i, j);
+			TileEntities.QEChest qeChest = BaseLibrary.Utility.GetTileEntity<TileEntities.QEChest>(i, j);
 			if (qeChest == null) return;
 
 			BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeChest);
@@ -40,7 +40,7 @@ namespace QuantumStorage.Tiles
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
-			TileEntities.QEChest qeChest = mod.GetTileEntity<TileEntities.QEChest>(i, j);
+			TileEntities.QEChest qeChest = BaseLibrary.Utility.GetTileEntity<TileEntities.QEChest>(i, j);
 			if (qeChest == null) return;
 
 			Main.specX[nextSpecialDrawIndex] = i;
@@ -50,7 +50,7 @@ namespace QuantumStorage.Tiles
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
 		{
-			TileEntities.QEChest qeChest = mod.GetTileEntity<TileEntities.QEChest>(i, j);
+			TileEntities.QEChest qeChest = BaseLibrary.Utility.GetTileEntity<TileEntities.QEChest>(i, j);
 			if (qeChest == null) return;
 
 			Tile tile = Main.tile[i, j];
@@ -65,7 +65,7 @@ namespace QuantumStorage.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			TileEntities.QEChest qeChest = mod.GetTileEntity<TileEntities.QEChest>(i, j);
+			TileEntities.QEChest qeChest = BaseLibrary.Utility.GetTileEntity<TileEntities.QEChest>(i, j);
 			BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(qeChest);
 
 			for (int index = 0; index < 3; index++) Item.NewItem(i * 16, j * 16, 32, 32, Utility.ColorToItem(qeChest.frequency[index]));

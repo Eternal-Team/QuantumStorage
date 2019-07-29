@@ -36,7 +36,7 @@ namespace QuantumStorage.Tiles
 
 		public override void RightClick(int i, int j)
 		{
-			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
+			TileEntities.QETank qeTank = BaseLibrary.Utility.GetTileEntity<TileEntities.QETank>(i, j);
 			if (qeTank == null) return;
 
 			Main.LocalPlayer.noThrow = 2;
@@ -112,7 +112,7 @@ namespace QuantumStorage.Tiles
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
 		{
-			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
+			TileEntities.QETank qeTank = BaseLibrary.Utility.GetTileEntity<TileEntities.QETank>(i, j);
 			if (qeTank == null) return;
 
 			Main.specX[nextSpecialDrawIndex] = i;
@@ -122,7 +122,7 @@ namespace QuantumStorage.Tiles
 
 		public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
 		{
-			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
+			TileEntities.QETank qeTank = BaseLibrary.Utility.GetTileEntity<TileEntities.QETank>(i, j);
 			if (qeTank == null) return;
 
 			Tile tile = Main.tile[i, j];
@@ -137,7 +137,7 @@ namespace QuantumStorage.Tiles
 			ModFluid fluid = qeTank.Handler?.GetFluidInSlot(0);
 			if (fluid != null)
 			{
-				Texture2D texture = FluidLoader.GetTexture(fluid.Name);
+				Texture2D texture = FluidLoader.GetTexture(fluid);
 				Vector2 scale = new Vector2(20f / texture.Width, 14f / texture.Height * (fluid.volume / (float)qeTank.Handler.GetSlotLimit(0)));
 				Color color = fluid is Lava
 					? Color.White
@@ -154,7 +154,7 @@ namespace QuantumStorage.Tiles
 
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
-			TileEntities.QETank qeTank = mod.GetTileEntity<TileEntities.QETank>(i, j);
+			TileEntities.QETank qeTank = BaseLibrary.Utility.GetTileEntity<TileEntities.QETank>(i, j);
 			BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(qeTank);
 
 			for (int index = 0; index < 3; index++) Item.NewItem(i * 16, j * 16, 32, 32, Utility.ColorToItem(qeTank.frequency[index]));
