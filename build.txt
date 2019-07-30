@@ -1,5 +1,5 @@
 author = Itorius, orian34 & team
-version = 1.0
+version = 1.0.1
 displayName = Quantum Storage
 homepage = http://forums.terraria.org/index.php?threads/itorius-mods.42289/
 hideCode = false
