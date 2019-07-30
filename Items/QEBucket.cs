@@ -190,6 +190,7 @@ namespace QuantumStorage.Items
 			recipe.AddIngredient(ItemID.EmptyBucket);
 			recipe.AddIngredient(ItemID.HallowedBar, 4);
 			recipe.AddIngredient(ItemID.SoulofSight, 5);
+			recipe.AddTile(TileID.SteampunkBoiler);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}

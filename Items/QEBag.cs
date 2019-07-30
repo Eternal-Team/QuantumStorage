@@ -129,6 +129,7 @@ namespace QuantumStorage.Items
 			recipe.AddIngredient(ItemID.Leather, 12);
 			recipe.AddIngredient(ItemID.HallowedBar, 4);
 			recipe.AddIngredient(ItemID.SoulofMight, 5);
+			recipe.AddTile(TileID.SteampunkBoiler);
 			recipe.SetResult(this);
 			recipe.AddRecipe();
 		}
