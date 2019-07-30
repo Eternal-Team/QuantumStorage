@@ -4,7 +4,6 @@ using BaseLibrary.UI.Elements;
 using ContainerLibrary;
 using Microsoft.Xna.Framework;
 using QuantumStorage.Items;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -18,7 +17,7 @@ namespace QuantumStorage.UI
 
 		private UIButton[] buttonsFrequency;
 		private UITextButton buttonInitialize;
-		
+
 		private UIGrid<UIContainerSlot> gridItems;
 
 		private UIGrid<UIContainerSlot> GridItems
@@ -55,7 +54,8 @@ namespace QuantumStorage.UI
 
 			UIText textLabel = new UIText(Container.DisplayName.GetTranslation())
 			{
-				HAlign = 0.5f
+				HAlign = 0.5f,
+				HorizontalAlignment = HorizontalAlignment.Center
 			};
 			Append(textLabel);
 
@@ -96,7 +96,7 @@ namespace QuantumStorage.UI
 				Left = (-20, 1),
 				RenderPanel = false,
 				HoverText = Language.GetText("Mods.BaseLibrary.UI.Close")
-		};
+			};
 			buttonClose.OnClick += (evt, element) => BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(Container);
 			Append(buttonClose);
 
@@ -126,6 +126,8 @@ namespace QuantumStorage.UI
 				{
 					if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
 					{
+						if (Container.frequency[pos] != Colors.None) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[pos]));
+
 						Container.frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
 						buttonsFrequency[pos].texture = QuantumStorage.textureGemsMiddle;
 						buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10);

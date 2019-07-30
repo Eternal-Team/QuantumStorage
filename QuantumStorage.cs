@@ -7,6 +7,8 @@ using Terraria.ModLoader.IO;
 
 namespace QuantumStorage
 {
+	// todo: sprites
+
 	public class QuantumStorage : Mod
 	{
 		internal static QuantumStorage Instance;

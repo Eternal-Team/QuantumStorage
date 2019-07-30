@@ -12,10 +12,10 @@ namespace QuantumStorage
 
 		public Frequency()
 		{
-			colors = new[] {Colors.None, Colors.None, Colors.None};
+			colors = new[] { Colors.None, Colors.None, Colors.None };
 		}
 
-		public Frequency(params Colors[] colors) => this.colors = new[] {colors[0], colors[1], colors[2]};
+		public Frequency(params Colors[] colors) => this.colors = new[] { colors[0], colors[1], colors[2] };
 
 		public Colors this[int index]
 		{

@@ -54,7 +54,8 @@ namespace QuantumStorage.UI
 
 			UIText textLabel = new UIText(Language.GetText("Mods.QuantumStorage.MapObject.QEChest"))
 			{
-				HAlign = 0.5f
+				HAlign = 0.5f,
+				HorizontalAlignment = HorizontalAlignment.Center
 			};
 			Append(textLabel);
 
@@ -122,9 +123,10 @@ namespace QuantumStorage.UI
 				};
 				buttonsFrequency[i].OnClick += (evt, element) =>
 				{
-					// bug: when clicking with a different gem it should swap it out
 					if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
 					{
+						if (Container.frequency[pos] != Colors.None) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[pos]));
+
 						Container.frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
 						buttonsFrequency[pos].texture = QuantumStorage.textureGemsMiddle;
 						buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10);

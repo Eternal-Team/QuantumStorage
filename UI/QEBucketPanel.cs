@@ -14,14 +14,13 @@ namespace QuantumStorage.UI
 	{
 		private UITank tankFluid;
 
-		private UITank TankFluid =>
-			tankFluid ?? (tankFluid = new UITank(Container)
-			{
-				Width = (40, 0),
-				Height = (-44, 1),
-				Top = (36, 0),
-				HAlign = 0.5f
-			});
+		private UITank TankFluid => tankFluid ?? (tankFluid = new UITank(Container)
+		{
+			Width = (40, 0),
+			Height = (-44, 1),
+			Top = (36, 0),
+			HAlign = 0.5f
+		});
 
 		private UIButton[] buttonsFrequency;
 		private UITextButton buttonInitialize;
@@ -34,7 +33,8 @@ namespace QuantumStorage.UI
 
 			UIText textLabel = new UIText(Container.DisplayName.GetTranslation())
 			{
-				HAlign = 0.5f
+				HAlign = 0.5f,
+				HorizontalAlignment = HorizontalAlignment.Center
 			};
 			Append(textLabel);
 
@@ -105,6 +105,8 @@ namespace QuantumStorage.UI
 				{
 					if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
 					{
+						if (Container.frequency[pos] != Colors.None) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[pos]));
+
 						Container.frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
 						buttonsFrequency[pos].texture = QuantumStorage.textureGemsMiddle;
 						buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10);
