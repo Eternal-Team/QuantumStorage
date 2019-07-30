@@ -63,6 +63,7 @@ namespace QuantumStorage.UI
 			{
 				Size = new Vector2(20),
 				RenderPanel = false,
+				Padding = (0, 0, 0, 0),
 				HoverText = Language.GetText("Mods.QuantumStorage.UI.Reset")
 			};
 			buttonReset.OnClick += (evt, element) =>
@@ -95,6 +96,7 @@ namespace QuantumStorage.UI
 				Size = new Vector2(20),
 				Left = (-20, 1),
 				RenderPanel = false,
+				Padding = (0, 0, 0, 0),
 				HoverText = Language.GetText("Mods.BaseLibrary.UI.Close")
 			};
 			buttonClose.OnClick += (evt, element) => BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(Container);
