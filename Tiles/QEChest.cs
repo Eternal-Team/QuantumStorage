@@ -9,6 +9,7 @@ using Terraria.ObjectData;
 
 namespace QuantumStorage.Tiles
 {
+	// todo: needs an opening animation
 	public class QEChest : BaseTile
 	{
 		public override string Texture => "QuantumStorage/Textures/Tiles/QEChest";

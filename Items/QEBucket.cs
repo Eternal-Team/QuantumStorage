@@ -20,6 +20,8 @@ namespace QuantumStorage.Items
 	{
 		public override string Texture => "QuantumStorage/Textures/Items/QEBucket";
 
+		public override bool CloneNewInstances => true;
+
 		public Guid UUID { get; set; }
 		public BaseUIPanel UI { get; set; }
 		public LegacySoundStyle CloseSound => SoundID.Item1;

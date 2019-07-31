@@ -1,6 +1,7 @@
 ﻿using ContainerLibrary;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -79,7 +80,7 @@ namespace QuantumStorage
 		internal static ItemPair baseItemPair;
 		internal static FluidPair baseFluidPair;
 
-		public override void Initialize()
+		public QSWorld()
 		{
 			Instance = this;
 
@@ -110,6 +111,24 @@ namespace QuantumStorage
 		{
 			QEItemHandlers = tag.GetList<ItemPair>("QEItems").ToList();
 			QEFluidHandlers = tag.GetList<FluidPair>("QEFluids").ToList();
+		}
+
+		public override void NetSend(BinaryWriter writer)
+		{
+			writer.Write(QEItemHandlers.Count);
+			foreach (ItemPair pair in QEItemHandlers) writer.Write(pair);
+
+			writer.Write(QEFluidHandlers.Count);
+			foreach (FluidPair pair in QEFluidHandlers) writer.Write(pair);
+		}
+
+		public override void NetReceive(BinaryReader reader)
+		{
+			int count = reader.ReadInt32();
+			for (int i = 0; i < count; i++) QEItemHandlers.Add(reader.ReadItemPair());
+
+			count = reader.ReadInt32();
+			for (int i = 0; i < count; i++) QEFluidHandlers.Add(reader.ReadFluidPair());
 		}
 	}
 }

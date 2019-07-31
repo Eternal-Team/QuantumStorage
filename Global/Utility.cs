@@ -33,5 +33,33 @@ namespace QuantumStorage
 		}
 
 		internal static Frequency ReadFrequency(this BinaryReader reader) => new Frequency((Colors)reader.ReadInt32(), (Colors)reader.ReadInt32(), (Colors)reader.ReadInt32());
+
+		public static void Write(this BinaryWriter writer, ItemPair pair)
+		{
+			writer.Write(pair.Frequency);
+			pair.Handler.Write(writer);
+		}
+
+		public static ItemPair ReadItemPair(this BinaryReader reader)
+		{
+			ItemPair pair = QSWorld.baseItemPair.Clone();
+			pair.Frequency = reader.ReadFrequency();
+			pair.Handler.Read(reader);
+			return pair;
+		}
+
+		public static void Write(this BinaryWriter writer, FluidPair pair)
+		{
+			writer.Write(pair.Frequency);
+			pair.Handler.Write(writer);
+		}
+
+		public static FluidPair ReadFluidPair(this BinaryReader reader)
+		{
+			FluidPair pair = QSWorld.baseFluidPair.Clone();
+			pair.Frequency = reader.ReadFrequency();
+			pair.Handler.Read(reader);
+			return pair;
+		}
 	}
 }
