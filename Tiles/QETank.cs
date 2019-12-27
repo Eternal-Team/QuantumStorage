@@ -18,14 +18,13 @@ namespace QuantumStorage.Tiles
 
 		public override void SetDefaults()
 		{
-			Main.tileSolidTop[Type] = true;
 			Main.tileFrameImportant[Type] = true;
 			Main.tileNoAttach[Type] = false;
 			Main.tileLavaDeath[Type] = false;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Origin = new Point16(0, 1);
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16 };
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(mod.GetTileEntity<TileEntities.QETank>().Hook_AfterPlacement, -1, 0, false);
+			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<TileEntities.QETank>().Hook_AfterPlacement, -1, 0, false);
 			TileObjectData.addTile(Type);
 			disableSmartCursor = true;
 			mineResist = 5f;
@@ -34,24 +33,24 @@ namespace QuantumStorage.Tiles
 			AddMapEntry(Color.Purple, name);
 		}
 
-		public override void RightClick(int i, int j)
+		public override bool NewRightClick(int i, int j)
 		{
 			TileEntities.QETank qeTank = BaseLibrary.Utility.GetTileEntity<TileEntities.QETank>(i, j);
-			if (qeTank == null) return;
+			if (qeTank == null) return false;
 
 			Main.LocalPlayer.noThrow = 2;
 
 			if (qeTank.Handler == null)
 			{
 				BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
-				return;
+				return true;
 			}
 
 			Item item = Main.LocalPlayer.GetHeldItem();
 			ref ModFluid fluid = ref qeTank.Handler.GetFluidInSlotByRef(0);
 			if (item.type == ItemID.EmptyBucket)
 			{
-				if (fluid == null || fluid.volume < 255) return;
+				if (fluid == null || fluid.volume < 255) return false;
 
 				switch (fluid.Name)
 				{
@@ -73,7 +72,7 @@ namespace QuantumStorage.Tiles
 			}
 			else if (item.type == ItemID.WaterBucket)
 			{
-				if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Water>()) || fluid.volume > 3 * 255)) return;
+				if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Water>()) || fluid.volume > 3 * 255)) return false;
 
 				if (fluid == null) fluid = FluidLoader.GetFluid<Water>().Clone();
 
@@ -85,7 +84,7 @@ namespace QuantumStorage.Tiles
 			}
 			else if (item.type == ItemID.LavaBucket)
 			{
-				if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Lava>()) || fluid.volume > 3 * 255)) return;
+				if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Lava>()) || fluid.volume > 3 * 255)) return false;
 
 				if (fluid == null) fluid = new Lava();
 
@@ -97,7 +96,7 @@ namespace QuantumStorage.Tiles
 			}
 			else if (item.type == ItemID.HoneyBucket)
 			{
-				if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Honey>()) || fluid.volume > 3 * 255)) return;
+				if (fluid != null && (!fluid.Equals(FluidLoader.GetFluid<Honey>()) || fluid.volume > 3 * 255)) return false;
 
 				if (fluid == null) fluid = new Honey();
 
@@ -108,6 +107,8 @@ namespace QuantumStorage.Tiles
 				Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
 			}
 			else BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
+
+			return true;
 		}
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
@@ -159,7 +160,7 @@ namespace QuantumStorage.Tiles
 
 			for (int index = 0; index < 3; index++) Item.NewItem(i * 16, j * 16, 32, 32, Utility.ColorToItem(qeTank.frequency[index]));
 
-			Item.NewItem(i * 16, j * 16, 32, 32, mod.ItemType<Items.QETank>());
+			Item.NewItem(i * 16, j * 16, 32, 32, ModContent.ItemType<Items.QETank>());
 			qeTank.Kill(i, j);
 		}
 	}

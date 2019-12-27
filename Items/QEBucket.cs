@@ -35,13 +35,13 @@ namespace QuantumStorage.Items
 			{
 				if (!frequency.IsSet) return null;
 
-				FluidPair pair = QSWorld.Instance.QEFluidHandlers.FirstOrDefault(fluidPair => Equals(fluidPair.Frequency, frequency));
+				FluidPair pair = ModContent.GetInstance<QSWorld>().QEFluidHandlers.FirstOrDefault(fluidPair => Equals(fluidPair.Frequency, frequency));
 				if (pair != null) return pair.Handler;
 
 				pair = QSWorld.baseFluidPair.Clone();
 				pair.Frequency = frequency;
 
-				QSWorld.Instance.QEFluidHandlers.Add(pair);
+				ModContent.GetInstance<QSWorld>().QEFluidHandlers.Add(pair);
 				Net.SendFluidFrequency(frequency);
 				return pair.Handler;
 			}

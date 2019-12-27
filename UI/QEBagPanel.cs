@@ -12,13 +12,8 @@ namespace QuantumStorage.UI
 {
 	public class QEBagPanel : BaseUIPanel<QEBag>, IItemHandlerUI
 	{
-		public ItemHandler Handler => Container.Handler;
-		public string GetTexture(Item item) => "QuantumStorage/Textures/Items/QEBag";
-
-		private UIButton[] buttonsFrequency;
-		private UITextButton buttonInitialize;
-
-		private UIGrid<UIContainerSlot> gridItems;
+		private const int SlotSize = 44;
+		private new const int Padding = 4;
 
 		private UIGrid<UIContainerSlot> GridItems
 		{
@@ -32,13 +27,17 @@ namespace QuantumStorage.UI
 					Height = (-28, 1),
 					Top = (28, 0),
 					OverflowHidden = true,
-					ListPadding = 4f
+					ListPadding = Padding
 				};
 
 				gridItems.Clear();
 				for (int i = 0; i < Container.Handler.Slots; i++)
 				{
-					UIContainerSlot slot = new UIContainerSlot(() => Container.Handler, i);
+					UIContainerSlot slot = new UIContainerSlot(() => Container.Handler, i)
+					{
+						Width = (SlotSize, 0),
+						Height = (SlotSize, 0)
+					};
 					gridItems.Add(slot);
 				}
 
@@ -46,71 +45,13 @@ namespace QuantumStorage.UI
 			}
 		}
 
-		public override void OnInitialize()
-		{
-			Width = (408, 0);
-			Height = (172, 0);
-			this.Center();
+		public ItemHandler Handler => Container.Handler;
+		public string GetTexture(Item item) => "QuantumStorage/Textures/Items/QEBag";
+		private UITextButton buttonInitialize;
 
-			UIText textLabel = new UIText(Container.DisplayName.GetTranslation())
-			{
-				HAlign = 0.5f,
-				HorizontalAlignment = HorizontalAlignment.Center
-			};
-			Append(textLabel);
+		private UIButton[] buttonsFrequency;
 
-			UITextButton buttonReset = new UITextButton("R")
-			{
-				Size = new Vector2(20),
-				RenderPanel = false,
-				Padding = (0, 0, 0, 0),
-				HoverText = Language.GetText("Mods.QuantumStorage.UI.Reset")
-			};
-			buttonReset.OnClick += (evt, element) =>
-			{
-				if (!Container.frequency.IsSet)
-				{
-					for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
-
-					Container.frequency = new Frequency();
-					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.SyncItem, -1, -1, null, Container.item.whoAmI, 1f);
-				}
-				else
-				{
-					for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
-
-					Container.frequency = new Frequency();
-					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.SyncItem, -1, -1, null, Container.item.whoAmI, 1f);
-
-					RemoveChild(GridItems);
-
-					InitializeFrequencySelection();
-					for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
-					Append(buttonInitialize);
-				}
-			};
-			Append(buttonReset);
-
-			UITextButton buttonClose = new UITextButton("X")
-			{
-				Size = new Vector2(20),
-				Left = (-20, 1),
-				RenderPanel = false,
-				Padding = (0, 0, 0, 0),
-				HoverText = Language.GetText("Mods.BaseLibrary.UI.Close")
-			};
-			buttonClose.OnClick += (evt, element) => BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(Container);
-			Append(buttonClose);
-
-			if (!Container.frequency.IsSet)
-			{
-				InitializeFrequencySelection();
-
-				for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
-				Append(buttonInitialize);
-			}
-			else Append(GridItems);
-		}
+		private UIGrid<UIContainerSlot> gridItems;
 
 		private void InitializeFrequencySelection()
 		{
@@ -159,6 +100,99 @@ namespace QuantumStorage.UI
 
 				Append(GridItems);
 			};
+		}
+
+		public override void OnInitialize()
+		{
+			Width = (16 + (SlotSize + Padding) * 9 - Padding, 0);
+			Height = (44 + (SlotSize + Padding) * 3 - Padding, 0);
+			this.Center();
+
+			UIText textLabel = new UIText(Container.DisplayName.GetTranslation())
+			{
+				HAlign = 0.5f,
+				HorizontalAlignment = HorizontalAlignment.Center
+			};
+			Append(textLabel);
+
+			UITextButton buttonReset = new UITextButton("R")
+			{
+				Size = new Vector2(20),
+				RenderPanel = false,
+				Padding = (0, 0, 0, 0),
+				HoverText = Language.GetText("Mods.QuantumStorage.UI.Reset")
+			};
+			buttonReset.OnClick += (evt, element) =>
+			{
+				if (!Container.frequency.IsSet)
+				{
+					for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
+
+					Container.frequency = new Frequency();
+					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.SyncItem, -1, -1, null, Container.item.whoAmI, 1f);
+				}
+				else
+				{
+					for (int i = 0; i < 3; i++) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[i]));
+
+					Container.frequency = new Frequency();
+					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.SyncItem, -1, -1, null, Container.item.whoAmI, 1f);
+
+					RemoveChild(GridItems);
+
+					InitializeFrequencySelection();
+					for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
+					Append(buttonInitialize);
+				}
+			};
+			Append(buttonReset);
+
+			UIButton buttonLootAll = new UIButton(QuantumStorage.textureLootAll)
+			{
+				Left = (28,0),
+				Size = new Vector2(20),
+				HoverText = Language.GetText("LegacyInterface.29")
+			};
+			buttonLootAll.OnClick += (evt, element) => ItemUtility.LootAll(Container.Handler, Main.LocalPlayer);
+			Append(buttonLootAll);
+
+			UIButton buttonDepositAll = new UIButton(QuantumStorage.textureDepositAll)
+			{
+				Size = new Vector2(20),
+				Left = (56, 0),
+				HoverText = Language.GetText("LegacyInterface.30")
+			};
+			buttonDepositAll.OnClick += (evt, element) => ItemUtility.DepositAll(Container.Handler, Main.LocalPlayer);
+			Append(buttonDepositAll);
+
+			UIButton buttonQuickStack = new UIButton(QuantumStorage.textureQuickStack)
+			{
+				Size = new Vector2(20),
+				Left = (84, 0),
+				HoverText = Language.GetText("LegacyInterface.31")
+			};
+			buttonQuickStack.OnClick += (evt, element) => ItemUtility.QuickStack(Container.Handler, Main.LocalPlayer);
+			Append(buttonQuickStack);
+
+			UITextButton buttonClose = new UITextButton("X")
+			{
+				Size = new Vector2(20),
+				Left = (-20, 1),
+				RenderPanel = false,
+				Padding = (0, 0, 0, 0),
+				HoverText = Language.GetText("Mods.BaseLibrary.UI.Close")
+			};
+			buttonClose.OnClick += (evt, element) => BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(Container);
+			Append(buttonClose);
+
+			if (!Container.frequency.IsSet)
+			{
+				InitializeFrequencySelection();
+
+				for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
+				Append(buttonInitialize);
+			}
+			else Append(GridItems);
 		}
 	}
 }

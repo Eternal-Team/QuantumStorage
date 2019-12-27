@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace QuantumStorage.TileEntities
@@ -28,13 +29,13 @@ namespace QuantumStorage.TileEntities
 			{
 				if (!frequency.IsSet) return null;
 
-				ItemPair pair = QSWorld.Instance.QEItemHandlers.FirstOrDefault(itemPair => Equals(itemPair.Frequency, frequency));
+				ItemPair pair = ModContent.GetInstance<QSWorld>().QEItemHandlers.FirstOrDefault(itemPair => Equals(itemPair.Frequency, frequency));
 				if (pair != null) return pair.Handler;
 
 				pair = QSWorld.baseItemPair.Clone();
 				pair.Frequency = frequency;
 
-				QSWorld.Instance.QEItemHandlers.Add(pair);
+				ModContent.GetInstance<QSWorld>().QEItemHandlers.Add(pair);
 				Net.SendItemFrequency(frequency);
 				return pair.Handler;
 			}

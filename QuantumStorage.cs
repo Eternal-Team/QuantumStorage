@@ -1,3 +1,4 @@
+using BaseLibrary;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using Terraria;
@@ -11,17 +12,26 @@ namespace QuantumStorage
 
 	public class QuantumStorage : Mod
 	{
-		internal static QuantumStorage Instance;
-
 		internal static Texture2D textureGemsSide;
 		internal static Texture2D textureGemsMiddle;
 		internal static Texture2D textureRingSmall;
 		internal static Texture2D textureRingBig;
+		internal static Texture2D textureLootAll;
+		internal static Texture2D textureDepositAll;
+		internal static Texture2D textureQuickStack;
+
+		public override void AddRecipes()
+		{
+			ModRecipe recipe = new ModRecipe(this);
+			recipe.AddIngredient(ItemID.Vertebrae, 5);
+			recipe.SetResult(ItemID.Leather);
+			recipe.AddRecipe();
+		}
+
+		public override void HandlePacket(BinaryReader reader, int whoAmI) => Net.HandlePacket(reader, whoAmI);
 
 		public override void Load()
 		{
-			Instance = this;
-
 			Utility.Load();
 
 			TagSerializer.AddSerializer(new FrequencySerializer());
@@ -34,19 +44,13 @@ namespace QuantumStorage
 				textureGemsSide = ModContent.GetTexture("QuantumStorage/Textures/Tiles/GemSide_0");
 				textureRingSmall = ModContent.GetTexture("QuantumStorage/Textures/Items/RingSmall");
 				textureRingBig = ModContent.GetTexture("QuantumStorage/Textures/Items/RingBig");
+
+				textureLootAll = ModContent.GetTexture("BaseLibrary/Textures/UI/LootAll");
+				textureDepositAll = ModContent.GetTexture("BaseLibrary/Textures/UI/DepositAll");
+				textureQuickStack = ModContent.GetTexture("BaseLibrary/Textures/UI/QuickStack");
 			}
 		}
 
-		public override void Unload() => BaseLibrary.Utility.UnloadNullableTypes();
-
-		public override void AddRecipes()
-		{
-			ModRecipe recipe = new ModRecipe(this);
-			recipe.AddIngredient(ItemID.Vertebrae, 5);
-			recipe.SetResult(ItemID.Leather);
-			recipe.AddRecipe();
-		}
-
-		public override void HandlePacket(BinaryReader reader, int whoAmI) => Net.HandlePacket(reader, whoAmI);
+		public override void Unload() => this.UnloadNullableTypes();
 	}
 }

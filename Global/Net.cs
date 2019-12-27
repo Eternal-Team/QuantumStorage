@@ -20,7 +20,7 @@ namespace QuantumStorage
 
 		internal static ModPacket GetPacket(PacketType packetType)
 		{
-			ModPacket packet = QuantumStorage.Instance.GetPacket();
+			ModPacket packet = ModContent.GetInstance<QuantumStorage>().GetPacket();
 			packet.Write((byte)packetType);
 			return packet;
 		}
@@ -61,7 +61,7 @@ namespace QuantumStorage
 
 			ItemPair handler = QSWorld.baseItemPair.Clone();
 			handler.Frequency = frequency;
-			QSWorld.Instance.QEItemHandlers.Add(handler);
+			ModContent.GetInstance<QSWorld>().QEItemHandlers.Add(handler);
 
 			if (Main.netMode == NetmodeID.Server) SendItemFrequency(frequency, whoAmI);
 		}
@@ -81,7 +81,7 @@ namespace QuantumStorage
 
 			FluidPair handler = QSWorld.baseFluidPair.Clone();
 			handler.Frequency = frequency;
-			QSWorld.Instance.QEFluidHandlers.Add(handler);
+			ModContent.GetInstance<QSWorld>().QEFluidHandlers.Add(handler);
 
 			if (Main.netMode == NetmodeID.Server) SendFluidFrequency(frequency, whoAmI);
 		}
@@ -93,7 +93,7 @@ namespace QuantumStorage
 			ModPacket packet = GetPacket(PacketType.SyncItemFrequency);
 			packet.Write(frequency);
 			packet.Write(slot);
-			packet.WriteItem(QSWorld.Instance.QEItemHandlers.FirstOrDefault(itemPair => Equals(itemPair.Frequency, frequency)).Handler.GetItemInSlot(slot), true);
+			packet.WriteItem(ModContent.GetInstance<QSWorld>().QEItemHandlers.FirstOrDefault(itemPair => Equals(itemPair.Frequency, frequency)).Handler.GetItemInSlot(slot), true);
 			packet.Send(ignoreClient: ignoreClient);
 		}
 
@@ -103,7 +103,7 @@ namespace QuantumStorage
 			int slot = reader.ReadInt32();
 			Item item = reader.ReadItem(true);
 
-			ItemPair pair = QSWorld.Instance.QEItemHandlers.FirstOrDefault(itemPair => Equals(itemPair.Frequency, frequency));
+			ItemPair pair = ModContent.GetInstance<QSWorld>().QEItemHandlers.FirstOrDefault(itemPair => Equals(itemPair.Frequency, frequency));
 			pair?.Handler.SetItemInSlot(slot, item);
 
 			if (Main.netMode == NetmodeID.Server) SendItem(frequency, slot, whoAmI);
@@ -116,7 +116,7 @@ namespace QuantumStorage
 			ModPacket packet = GetPacket(PacketType.SyncFluidFrequency);
 			packet.Write(frequency);
 			packet.Write(slot);
-			packet.Write(QSWorld.Instance.QEFluidHandlers.FirstOrDefault(fluidPair => Equals(fluidPair.Frequency, frequency)).Handler.GetFluidInSlot(slot));
+			packet.Write(ModContent.GetInstance<QSWorld>().QEFluidHandlers.FirstOrDefault(fluidPair => Equals(fluidPair.Frequency, frequency)).Handler.GetFluidInSlot(slot));
 			packet.Send(ignoreClient: ignoreClient);
 		}
 
@@ -126,7 +126,7 @@ namespace QuantumStorage
 			int slot = reader.ReadInt32();
 			ModFluid fluid = reader.ReadFluid();
 
-			FluidPair pair = QSWorld.Instance.QEFluidHandlers.FirstOrDefault(fluidPair => Equals(fluidPair.Frequency, frequency));
+			FluidPair pair = ModContent.GetInstance<QSWorld>().QEFluidHandlers.FirstOrDefault(fluidPair => Equals(fluidPair.Frequency, frequency));
 			pair?.Handler.SetFluidInSlot(slot, fluid);
 
 			if (Main.netMode == NetmodeID.Server) SendFluid(frequency, slot, whoAmI);

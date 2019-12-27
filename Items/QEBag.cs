@@ -34,13 +34,13 @@ namespace QuantumStorage.Items
 			{
 				if (!frequency.IsSet) return null;
 
-				ItemPair pair = QSWorld.Instance.QEItemHandlers.FirstOrDefault(itemPair => Equals(itemPair.Frequency, frequency));
+				ItemPair pair = ModContent.GetInstance<QSWorld>().QEItemHandlers.FirstOrDefault(itemPair => Equals(itemPair.Frequency, frequency));
 				if (pair != null) return pair.Handler;
 
 				pair = QSWorld.baseItemPair.Clone();
 				pair.Frequency = frequency;
 
-				QSWorld.Instance.QEItemHandlers.Add(pair);
+				ModContent.GetInstance<QSWorld>().QEItemHandlers.Add(pair);
 				Net.SendItemFrequency(frequency);
 				return pair.Handler;
 			}
@@ -87,9 +87,9 @@ namespace QuantumStorage.Items
 
 		public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
-			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(2, 12) * scale, new Rectangle(6 * (int)frequency[0], 0, 6, 10), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position + new Vector2(12, 12) * scale, new Rectangle(8 * (int)frequency[1], 0, 8, 10), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
-			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(24, 12) * scale, new Rectangle(6 * (int)frequency[2], 0, 6, 10), Color.White, 0f, origin, scale, SpriteEffects.FlipHorizontally, 0f);
+			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(2, 12) * scale, new Rectangle(6 * (int)frequency[0], 0, 6, 10), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position + new Vector2(12, 12) * scale, new Rectangle(8 * (int)frequency[1], 0, 8, 10), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+			spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(24, 12) * scale, new Rectangle(6 * (int)frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.FlipHorizontally, 0f);
 		}
 
 		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)

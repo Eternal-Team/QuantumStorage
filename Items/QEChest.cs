@@ -22,7 +22,7 @@ namespace QuantumStorage.Items
 			item.consumable = true;
 			item.rare = ItemRarityID.Pink;
 			item.value = Item.sellPrice(gold: 8);
-			item.createTile = mod.TileType<Tiles.QEChest>();
+			item.createTile = ModContent.TileType<Tiles.QEChest>();
 		}
 
 		public override void AddRecipes()

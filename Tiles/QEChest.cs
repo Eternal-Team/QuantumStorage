@@ -23,7 +23,7 @@ namespace QuantumStorage.Tiles
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style2x2);
 			TileObjectData.newTile.Origin = new Point16(0, 1);
 			TileObjectData.newTile.CoordinateHeights = new[] { 16, 16 };
-			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(mod.GetTileEntity<TileEntities.QEChest>().Hook_AfterPlacement, -1, 0, false);
+			TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(ModContent.GetInstance<TileEntities.QEChest>().Hook_AfterPlacement, -1, 0, false);
 			TileObjectData.addTile(Type);
 			disableSmartCursor = true;
 
@@ -31,12 +31,14 @@ namespace QuantumStorage.Tiles
 			AddMapEntry(Color.Purple, name);
 		}
 
-		public override void RightClick(int i, int j)
+		public override bool NewRightClick(int i, int j)
 		{
 			TileEntities.QEChest qeChest = BaseLibrary.Utility.GetTileEntity<TileEntities.QEChest>(i, j);
-			if (qeChest == null) return;
+			if (qeChest == null) return false;
 
 			BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeChest);
+
+			return true;
 		}
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref Color drawColor, ref int nextSpecialDrawIndex)
@@ -71,7 +73,7 @@ namespace QuantumStorage.Tiles
 
 			for (int index = 0; index < 3; index++) Item.NewItem(i * 16, j * 16, 32, 32, Utility.ColorToItem(qeChest.frequency[index]));
 
-			Item.NewItem(i * 16, j * 16, 32, 32, mod.ItemType<Items.QEChest>());
+			Item.NewItem(i * 16, j * 16, 32, 32, ModContent.ItemType<Items.QEChest>());
 			qeChest.Kill(i, j);
 		}
 	}

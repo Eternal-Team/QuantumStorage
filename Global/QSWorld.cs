@@ -72,8 +72,6 @@ namespace QuantumStorage
 
 	public class QSWorld : ModWorld
 	{
-		public static QSWorld Instance;
-
 		public List<ItemPair> QEItemHandlers;
 		public List<FluidPair> QEFluidHandlers;
 
@@ -82,8 +80,6 @@ namespace QuantumStorage
 
 		public QSWorld()
 		{
-			Instance = this;
-
 			baseItemPair = new ItemPair
 			{
 				Handler = new ItemHandler(27)

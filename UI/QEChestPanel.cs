@@ -12,13 +12,8 @@ namespace QuantumStorage.UI
 {
 	public class QEChestPanel : BaseUIPanel<QEChest>, IItemHandlerUI
 	{
-		public ItemHandler Handler => Container.Handler;
-		public string GetTexture(Item item) => "QuantumStorage/Textures/Items/QEChest";
-
-		private UIButton[] buttonsFrequency;
-		private UITextButton buttonInitialize;
-
-		private UIGrid<UIContainerSlot> gridItems;
+		private const int SlotSize = 44;
+		private new const int Padding = 4;
 
 		private UIGrid<UIContainerSlot> GridItems
 		{
@@ -32,13 +27,17 @@ namespace QuantumStorage.UI
 					Height = (-28, 1),
 					Top = (28, 0),
 					OverflowHidden = true,
-					ListPadding = 4f
+					ListPadding = Padding
 				};
 
 				gridItems.Clear();
 				for (int i = 0; i < Container.Handler.Slots; i++)
 				{
-					UIContainerSlot slot = new UIContainerSlot(() => Container.Handler, i);
+					UIContainerSlot slot = new UIContainerSlot(() => Container.Handler, i)
+					{
+						Width = (SlotSize, 0),
+						Height = (SlotSize, 0)
+					};
 					gridItems.Add(slot);
 				}
 
@@ -46,10 +45,67 @@ namespace QuantumStorage.UI
 			}
 		}
 
+		public ItemHandler Handler => Container.Handler;
+		public string GetTexture(Item item) => "QuantumStorage/Textures/Items/QEChest";
+		private UITextButton buttonInitialize;
+
+		private UIButton[] buttonsFrequency;
+
+		private UIGrid<UIContainerSlot> gridItems;
+
+		private void InitializeFrequencySelection()
+		{
+			buttonsFrequency = new UIButton[3];
+			for (int i = 0; i < 3; i++)
+			{
+				int pos = i;
+				buttonsFrequency[i] = new UIButton(QuantumStorage.textureGemsMiddle, new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10))
+				{
+					Size = new Vector2(16, 20),
+					HAlign = 0.4f + 0.1f * pos,
+					VAlign = 0.5f
+				};
+				buttonsFrequency[i].OnClick += (evt, element) =>
+				{
+					if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
+					{
+						if (Container.frequency[pos] != Colors.None) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[pos]));
+
+						Container.frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
+						buttonsFrequency[pos].texture = QuantumStorage.textureGemsMiddle;
+						buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10);
+						if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, Container.ID, Container.Position.X, Container.Position.Y);
+
+						Main.mouseItem.stack--;
+						if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();
+
+						if (Container.frequency.IsSet) buttonInitialize.text = Language.GetTextValue("Mods.QuantumStorage.UI.Initialize");
+					}
+				};
+			}
+
+			buttonInitialize = new UITextButton(Language.GetText("Mods.QuantumStorage.UI.InsertGems"))
+			{
+				Width = (-64, 1),
+				Height = (40, 0),
+				VAlign = 1,
+				HAlign = 0.5f
+			};
+			buttonInitialize.OnClick += (evt, element) =>
+			{
+				if (!Container.frequency.IsSet) return;
+
+				for (int i = 0; i < 3; i++) RemoveChild(buttonsFrequency[i]);
+				RemoveChild(buttonInitialize);
+
+				Append(GridItems);
+			};
+		}
+
 		public override void OnInitialize()
 		{
-			Width = (408, 0);
-			Height = (172, 0);
+			Width = (16 + (SlotSize + Padding) * 9 - Padding, 0);
+			Height = (44 + (SlotSize + Padding) * 3 - Padding, 0);
 			this.Center();
 
 			UIText textLabel = new UIText(Language.GetText("Mods.QuantumStorage.MapObject.QEChest"))
@@ -109,55 +165,6 @@ namespace QuantumStorage.UI
 				Append(buttonInitialize);
 			}
 			else Append(GridItems);
-		}
-
-		private void InitializeFrequencySelection()
-		{
-			buttonsFrequency = new UIButton[3];
-			for (int i = 0; i < 3; i++)
-			{
-				int pos = i;
-				buttonsFrequency[i] = new UIButton(QuantumStorage.textureGemsMiddle, new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10))
-				{
-					Size = new Vector2(16, 20),
-					HAlign = 0.4f + 0.1f * pos,
-					VAlign = 0.5f
-				};
-				buttonsFrequency[i].OnClick += (evt, element) =>
-				{
-					if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
-					{
-						if (Container.frequency[pos] != Colors.None) Main.LocalPlayer.PutItemInInventory(Utility.ColorToItem(Container.frequency[pos]));
-
-						Container.frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
-						buttonsFrequency[pos].texture = QuantumStorage.textureGemsMiddle;
-						buttonsFrequency[pos].sourceRectangle = new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10);
-						if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, Container.ID, Container.Position.X, Container.Position.Y);
-
-						Main.mouseItem.stack--;
-						if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();
-
-						if (Container.frequency.IsSet) buttonInitialize.text = Language.GetTextValue("Mods.QuantumStorage.UI.Initialize");
-					}
-				};
-			}
-
-			buttonInitialize = new UITextButton(Language.GetText("Mods.QuantumStorage.UI.InsertGems"))
-			{
-				Width = (-64, 1),
-				Height = (40, 0),
-				VAlign = 1,
-				HAlign = 0.5f
-			};
-			buttonInitialize.OnClick += (evt, element) =>
-			{
-				if (!Container.frequency.IsSet) return;
-
-				for (int i = 0; i < 3; i++) RemoveChild(buttonsFrequency[i]);
-				RemoveChild(buttonInitialize);
-
-				Append(GridItems);
-			};
 		}
 	}
 }
