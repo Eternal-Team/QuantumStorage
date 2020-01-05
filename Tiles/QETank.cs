@@ -1,5 +1,6 @@
 ﻿using BaseLibrary;
 using BaseLibrary.Tiles;
+using BaseLibrary.UI.New;
 using ContainerLibrary;
 using FluidLibrary.Content;
 using Microsoft.Xna.Framework;
@@ -42,7 +43,7 @@ namespace QuantumStorage.Tiles
 
 			if (qeTank.Handler == null)
 			{
-				BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
+				PanelUI.Instance.HandleUI(qeTank);
 				return true;
 			}
 
@@ -106,7 +107,7 @@ namespace QuantumStorage.Tiles
 				if (item.stack <= 0) item.TurnToAir();
 				Main.LocalPlayer.PutItemInInventory(ItemID.EmptyBucket);
 			}
-			else BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeTank);
+			else PanelUI.Instance.HandleUI(qeTank);
 
 			return true;
 		}
@@ -156,7 +157,7 @@ namespace QuantumStorage.Tiles
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
 			TileEntities.QETank qeTank = BaseLibrary.Utility.GetTileEntity<TileEntities.QETank>(i, j);
-			BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(qeTank);
+			PanelUI.Instance.CloseUI(qeTank);
 
 			for (int index = 0; index < 3; index++) Item.NewItem(i * 16, j * 16, 32, 32, Utility.ColorToItem(qeTank.frequency[index]));
 

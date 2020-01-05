@@ -1,5 +1,6 @@
 ﻿using BaseLibrary;
 using BaseLibrary.Tiles;
+using BaseLibrary.UI.New;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -36,7 +37,7 @@ namespace QuantumStorage.Tiles
 			TileEntities.QEChest qeChest = BaseLibrary.Utility.GetTileEntity<TileEntities.QEChest>(i, j);
 			if (qeChest == null) return false;
 
-			BaseLibrary.BaseLibrary.PanelGUI.UI.HandleUI(qeChest);
+			PanelUI.Instance.HandleUI(qeChest);
 
 			return true;
 		}
@@ -69,7 +70,7 @@ namespace QuantumStorage.Tiles
 		public override void KillMultiTile(int i, int j, int frameX, int frameY)
 		{
 			TileEntities.QEChest qeChest = BaseLibrary.Utility.GetTileEntity<TileEntities.QEChest>(i, j);
-			BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(qeChest);
+			PanelUI.Instance.CloseUI(qeChest);
 
 			for (int index = 0; index < 3; index++) Item.NewItem(i * 16, j * 16, 32, 32, Utility.ColorToItem(qeChest.frequency[index]));
 

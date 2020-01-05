@@ -1,6 +1,5 @@
 ﻿using BaseLibrary;
-using BaseLibrary.UI;
-using BaseLibrary.UI.Elements;
+using BaseLibrary.UI.New;
 using ContainerLibrary;
 using Microsoft.Xna.Framework;
 using QuantumStorage.Items;
@@ -23,10 +22,9 @@ namespace QuantumStorage.UI
 
 				gridItems = new UIGrid<UIContainerSlot>(9)
 				{
-					Width = (0, 1),
-					Height = (-28, 1),
-					Top = (28, 0),
-					OverflowHidden = true,
+					Width = { Percent = 100 },
+					Height = { Pixels = -28, Percent = 100 },
+					Y = { Pixels = 28 },
 					ListPadding = Padding
 				};
 
@@ -35,8 +33,8 @@ namespace QuantumStorage.UI
 				{
 					UIContainerSlot slot = new UIContainerSlot(() => Container.Handler, i)
 					{
-						Width = (SlotSize, 0),
-						Height = (SlotSize, 0)
+						Width = { Pixels = SlotSize },
+						Height = { Pixels = SlotSize }
 					};
 					gridItems.Add(slot);
 				}
@@ -62,10 +60,10 @@ namespace QuantumStorage.UI
 				buttonsFrequency[i] = new UIButton(QuantumStorage.textureGemsMiddle, new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10))
 				{
 					Size = new Vector2(16, 20),
-					HAlign = 0.4f + 0.1f * pos,
-					VAlign = 0.5f
+					X = { Percent = 40 + 10 * pos },
+					Y = { Percent = 50 }
 				};
-				buttonsFrequency[i].OnClick += (evt, element) =>
+				buttonsFrequency[i].OnClick += args =>
 				{
 					if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
 					{
@@ -86,43 +84,42 @@ namespace QuantumStorage.UI
 
 			buttonInitialize = new UITextButton(Language.GetText("Mods.QuantumStorage.UI.InsertGems"))
 			{
-				Width = (-64, 1),
-				Height = (40, 0),
-				VAlign = 1,
-				HAlign = 0.5f
+				Width = { Pixels = -64, Percent = 100 },
+				Height = { Pixels = 40 },
+				Y = { Percent = 100 },
+				X = { Percent = 50 }
 			};
-			buttonInitialize.OnClick += (evt, element) =>
+			buttonInitialize.OnClick += args =>
 			{
 				if (!Container.frequency.IsSet) return;
 
-				for (int i = 0; i < 3; i++) RemoveChild(buttonsFrequency[i]);
-				RemoveChild(buttonInitialize);
+				for (int i = 0; i < 3; i++) Remove(buttonsFrequency[i]);
+				Remove(buttonInitialize);
 
-				Append(GridItems);
+				Add(GridItems);
 			};
 		}
 
-		public override void OnInitialize()
+		public QEBagPanel(QEBag bag) : base(bag)
 		{
-			Width = (16 + (SlotSize + Padding) * 9 - Padding, 0);
-			Height = (44 + (SlotSize + Padding) * 3 - Padding, 0);
-			this.Center();
+			Width.Pixels = 16 + (SlotSize + Padding) * 9 - Padding;
+			Height.Pixels = 44 + (SlotSize + Padding) * 3 - Padding;
 
 			UIText textLabel = new UIText(Container.DisplayName.GetTranslation())
 			{
-				HAlign = 0.5f,
+				X = { Percent = 50 },
 				HorizontalAlignment = HorizontalAlignment.Center
 			};
-			Append(textLabel);
+			Add(textLabel);
 
 			UITextButton buttonReset = new UITextButton("R")
 			{
 				Size = new Vector2(20),
 				RenderPanel = false,
-				Padding = (0, 0, 0, 0),
+				Padding = BaseLibrary.UI.New.Padding.Zero,
 				HoverText = Language.GetText("Mods.QuantumStorage.UI.Reset")
 			};
-			buttonReset.OnClick += (evt, element) =>
+			buttonReset.OnClick += args =>
 			{
 				if (!Container.frequency.IsSet)
 				{
@@ -138,61 +135,61 @@ namespace QuantumStorage.UI
 					Container.frequency = new Frequency();
 					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.SyncItem, -1, -1, null, Container.item.whoAmI, 1f);
 
-					RemoveChild(GridItems);
+					Remove(GridItems);
 
 					InitializeFrequencySelection();
-					for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
-					Append(buttonInitialize);
+					for (int i = 0; i < 3; i++) Add(buttonsFrequency[i]);
+					Add(buttonInitialize);
 				}
 			};
-			Append(buttonReset);
+			Add(buttonReset);
 
 			UIButton buttonLootAll = new UIButton(QuantumStorage.textureLootAll)
 			{
-				Left = (28,0),
+				X = { Pixels = 28 },
 				Size = new Vector2(20),
 				HoverText = Language.GetText("LegacyInterface.29")
 			};
-			buttonLootAll.OnClick += (evt, element) => ItemUtility.LootAll(Container.Handler, Main.LocalPlayer);
-			Append(buttonLootAll);
+			buttonLootAll.OnClick += args => ItemUtility.LootAll(Container.Handler, Main.LocalPlayer);
+			Add(buttonLootAll);
 
 			UIButton buttonDepositAll = new UIButton(QuantumStorage.textureDepositAll)
 			{
 				Size = new Vector2(20),
-				Left = (56, 0),
+				X = { Pixels = 56 },
 				HoverText = Language.GetText("LegacyInterface.30")
 			};
-			buttonDepositAll.OnClick += (evt, element) => ItemUtility.DepositAll(Container.Handler, Main.LocalPlayer);
-			Append(buttonDepositAll);
+			buttonDepositAll.OnClick += args => ItemUtility.DepositAll(Container.Handler, Main.LocalPlayer);
+			Add(buttonDepositAll);
 
 			UIButton buttonQuickStack = new UIButton(QuantumStorage.textureQuickStack)
 			{
 				Size = new Vector2(20),
-				Left = (84, 0),
+				X = { Pixels = 84 },
 				HoverText = Language.GetText("LegacyInterface.31")
 			};
-			buttonQuickStack.OnClick += (evt, element) => ItemUtility.QuickStack(Container.Handler, Main.LocalPlayer);
-			Append(buttonQuickStack);
+			buttonQuickStack.OnClick += args => ItemUtility.QuickStack(Container.Handler, Main.LocalPlayer);
+			Add(buttonQuickStack);
 
 			UITextButton buttonClose = new UITextButton("X")
 			{
 				Size = new Vector2(20),
-				Left = (-20, 1),
+				X = { Percent = 100 },
 				RenderPanel = false,
-				Padding = (0, 0, 0, 0),
+				Padding = BaseLibrary.UI.New.Padding.Zero,
 				HoverText = Language.GetText("Mods.BaseLibrary.UI.Close")
 			};
-			buttonClose.OnClick += (evt, element) => BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(Container);
-			Append(buttonClose);
+			buttonClose.OnClick += args => PanelUI.Instance.CloseUI(Container);
+			Add(buttonClose);
 
 			if (!Container.frequency.IsSet)
 			{
 				InitializeFrequencySelection();
 
-				for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
-				Append(buttonInitialize);
+				for (int i = 0; i < 3; i++) Add(buttonsFrequency[i]);
+				Add(buttonInitialize);
 			}
-			else Append(GridItems);
+			else Add(GridItems);
 		}
 	}
 }

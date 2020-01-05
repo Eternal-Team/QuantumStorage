@@ -1,6 +1,4 @@
-﻿using BaseLibrary;
-using BaseLibrary.UI;
-using BaseLibrary.UI.Elements;
+﻿using BaseLibrary.UI.New;
 using ContainerLibrary;
 using Microsoft.Xna.Framework;
 using QuantumStorage.TileEntities;
@@ -16,36 +14,36 @@ namespace QuantumStorage.UI
 
 		private UITank TankFluid => tankFluid ?? (tankFluid = new UITank(Container)
 		{
-			Width = (40, 0),
-			Height = (-44, 1),
-			Top = (36, 0),
-			HAlign = 0.5f
+			Width = { Pixels = 40 },
+			Height = { Pixels = -44, Percent = 100 },
+			Y = { Pixels = 36 },
+			X = { Percent = 50 }
 		});
 
 		private UIButton[] buttonsFrequency;
 		private UITextButton buttonInitialize;
 
-		public override void OnInitialize()
+		public QETankPanel(QETank tank) : base(tank)
 		{
-			Width = (408, 0);
-			Height = (172, 0);
-			this.Center();
+			Width.Percent = 408;
+			Height.Pixels = 172;
+
 
 			UIText textLabel = new UIText(Language.GetText("Mods.QuantumStorage.MapObject.QETank"))
 			{
-				HAlign = 0.5f,
+				X = { Percent = 50 },
 				HorizontalAlignment = HorizontalAlignment.Center
 			};
-			Append(textLabel);
+			Add(textLabel);
 
 			UITextButton buttonReset = new UITextButton("R")
 			{
 				Size = new Vector2(20),
 				RenderPanel = false,
-				Padding = (0, 0, 0, 0),
+				Padding = Padding.Zero,
 				HoverText = Language.GetText("Mods.QuantumStorage.UI.Reset")
 			};
-			buttonReset.OnClick += (evt, element) =>
+			buttonReset.OnClick += args =>
 			{
 				if (!Container.frequency.IsSet)
 				{
@@ -61,34 +59,34 @@ namespace QuantumStorage.UI
 					Container.frequency = new Frequency();
 					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, Container.ID, Container.Position.X, Container.Position.Y);
 
-					RemoveChild(TankFluid);
+					Remove(TankFluid);
 
 					InitializeFrequencySelection();
-					for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
-					Append(buttonInitialize);
+					for (int i = 0; i < 3; i++) Add(buttonsFrequency[i]);
+					Add(buttonInitialize);
 				}
 			};
-			Append(buttonReset);
+			Add(buttonReset);
 
 			UITextButton buttonClose = new UITextButton("X")
 			{
 				Size = new Vector2(20),
-				Left = (-20, 1),
+				X = { Percent = 100 },
 				RenderPanel = false,
-				Padding = (0, 0, 0, 0),
+				Padding = Padding.Zero,
 				HoverText = Language.GetText("Mods.BaseLibrary.UI.Close")
 			};
-			buttonClose.OnClick += (evt, element) => BaseLibrary.BaseLibrary.PanelGUI.UI.CloseUI(Container);
-			Append(buttonClose);
+			buttonClose.OnClick += args => PanelUI.Instance.CloseUI(Container);
+			Add(buttonClose);
 
 			if (!Container.frequency.IsSet)
 			{
 				InitializeFrequencySelection();
 
-				for (int i = 0; i < 3; i++) Append(buttonsFrequency[i]);
-				Append(buttonInitialize);
+				for (int i = 0; i < 3; i++) Add(buttonsFrequency[i]);
+				Add(buttonInitialize);
 			}
-			else Append(TankFluid);
+			else Add(TankFluid);
 		}
 
 		private void InitializeFrequencySelection()
@@ -100,10 +98,10 @@ namespace QuantumStorage.UI
 				buttonsFrequency[i] = new UIButton(QuantumStorage.textureGemsMiddle, new Rectangle(8 * (int)Container.frequency[pos], 0, 8, 10))
 				{
 					Size = new Vector2(16, 20),
-					HAlign = 0.4f + 0.1f * pos,
-					VAlign = 0.5f
+					X = { Percent = 40 + 10 * pos },
+					Y = { Percent = 50 }
 				};
-				buttonsFrequency[i].OnClick += (evt, element) =>
+				buttonsFrequency[i].OnClick += args =>
 				{
 					if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
 					{
@@ -124,19 +122,19 @@ namespace QuantumStorage.UI
 
 			buttonInitialize = new UITextButton(Language.GetText("Mods.QuantumStorage.UI.InsertGems"))
 			{
-				Width = (-64, 1),
-				Height = (40, 0),
-				VAlign = 1,
-				HAlign = 0.5f
+				Width = { Pixels = -64, Percent = 100 },
+				Height = { Pixels = 40 },
+				Y = { Percent = 100 },
+				X = { Percent = 50 }
 			};
-			buttonInitialize.OnClick += (evt, element) =>
+			buttonInitialize.OnClick += args =>
 			{
 				if (!Container.frequency.IsSet) return;
 
-				for (int i = 0; i < 3; i++) RemoveChild(buttonsFrequency[i]);
-				RemoveChild(buttonInitialize);
+				for (int i = 0; i < 3; i++) Remove(buttonsFrequency[i]);
+				Remove(buttonInitialize);
 
-				Append(TankFluid);
+				Add(TankFluid);
 			};
 		}
 	}
