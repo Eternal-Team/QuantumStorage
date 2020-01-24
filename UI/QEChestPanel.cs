@@ -1,4 +1,4 @@
-﻿using BaseLibrary.UI.New;
+﻿using BaseLibrary.UI;
 using ContainerLibrary;
 using Microsoft.Xna.Framework;
 using QuantumStorage.TileEntities;
@@ -10,8 +10,7 @@ namespace QuantumStorage.UI
 {
 	public class QEChestPanel : BaseUIPanel<QEChest>, IItemHandlerUI
 	{
-		private const int SlotSize = 44;
-		private new const int Padding = 4;
+		private const int Padding = 4;
 
 		private UIGrid<UIContainerSlot> GridItems
 		{
@@ -24,7 +23,7 @@ namespace QuantumStorage.UI
 					Width = { Percent = 100 },
 					Height = { Pixels = -28, Percent = 100 },
 					Y = { Pixels = 28 },
-					ListPadding = Padding
+					ItemMargin = SlotMargin
 				};
 
 				gridItems.Clear();
@@ -52,8 +51,8 @@ namespace QuantumStorage.UI
 
 		public QEChestPanel(QEChest chest) : base(chest)
 		{
-			Width.Pixels = 16 + (SlotSize + Padding) * 9 - Padding;
-			Height.Pixels = 44 + (SlotSize + Padding) * 3 - Padding;
+			Width.Pixels = 16 + (SlotSize + SlotMargin) * 9 - SlotMargin;
+			Height.Pixels = 44 + (SlotSize + SlotMargin) * 3 - SlotMargin;
 
 			UIText textLabel = new UIText(Language.GetText("Mods.QuantumStorage.MapObject.QEChest"))
 			{
@@ -66,7 +65,7 @@ namespace QuantumStorage.UI
 			{
 				Size = new Vector2(20),
 				RenderPanel = false,
-				Padding = BaseLibrary.UI.New.Padding.Zero,
+				Padding = BaseLibrary.UI.Padding.Zero,
 				HoverText = Language.GetText("Mods.QuantumStorage.UI.Reset")
 			};
 			buttonReset.OnClick += args =>
@@ -99,7 +98,7 @@ namespace QuantumStorage.UI
 				Size = new Vector2(20),
 				X = { Percent = 100 },
 				RenderPanel = false,
-				Padding = BaseLibrary.UI.New.Padding.Zero,
+				Padding = BaseLibrary.UI.Padding.Zero,
 				HoverText = Language.GetText("Mods.BaseLibrary.UI.Close")
 			};
 			buttonClose.OnClick += args => PanelUI.Instance.CloseUI(Container);

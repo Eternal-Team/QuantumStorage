@@ -1,6 +1,6 @@
 ﻿using BaseLibrary;
 using BaseLibrary.Items;
-using BaseLibrary.UI.New;
+using BaseLibrary.UI;
 using ContainerLibrary;
 using FluidLibrary.Content;
 using Microsoft.Xna.Framework;

@@ -1,6 +1,6 @@
 ﻿using BaseLibrary;
 using BaseLibrary.Tiles.TileEntites;
-using BaseLibrary.UI.New;
+using BaseLibrary.UI;
 using ContainerLibrary;
 using System;
 using System.IO;
