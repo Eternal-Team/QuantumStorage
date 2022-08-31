@@ -1,0 +1,14 @@
+HIGHLY EXPERIMENTAL, please report any bugs to my Discord server (discord.gg/EP9nfZV #bug-reports channel)
+
+Quantum Storage allows you to access a huge array of storage space. Be it portable or tiles, it's all at hand's reach through the quantum realm!
+With the use of a 3 gem code, you can access specific frequencies, each with their own space and can be changed if need be.
+There is both item and liquid storage, with their corresponding containers to access it. 
+Inventory pockets can hold 27 stacks, while you can have up to 4 buckets worth in one liquid pocket.
+
+Items
+Quantum Entangled Bag - Made with 12 leather, 4 hallowed bars and 5 souls of might.
+Quantum Entangled Chest - Made with 1 gold chest, 7 hallowed bars and 5 souls of might.
+
+Fluids
+Quantum Entangled Bucket - Made with 1 empty bucket, 4 hallowed bars and 5 souls of sight.
+Quantum Entangled Tank - Made with 40 glass, 7 hallowed bars and 5 souls of sight..
