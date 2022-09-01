@@ -11,7 +11,7 @@ namespace QuantumStorage.Tiles;
 
 public class QEChest : ModTile
 {
-	public override string Texture => "QuantumStorage/Textures/Tiles/QEChest";
+	public override string Texture => QuantumStorage.TexturePath + "Tiles/QEChest";
 
 	public override void SetStaticDefaults()
 	{
@@ -55,9 +55,9 @@ public class QEChest : ModTile
 
 		Vector2 position = new Point16(i, j).ToScreenCoordinates();
 
-		// spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(5, 9), new Rectangle(6 * (int)qeChest.frequency[0], 0, 6, 10), Color.White, 0f, new Vector2(3, 5), 1f, SpriteEffects.None, 0f);
-		// spriteBatch.Draw(QuantumStorage.textureGemsMiddle, position + new Vector2(12, 4), new Rectangle(8 * (int)qeChest.frequency[1], 0, 8, 10), Color.White);
-		// spriteBatch.Draw(QuantumStorage.textureGemsSide, position + new Vector2(24, 4), new Rectangle(6 * (int)qeChest.frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.FlipHorizontally, 0f);
+		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemSide_0").Value, position + new Vector2(5, 9), new Rectangle(6 * (int)qeChest.Frequency[0], 0, 6, 10), Color.White, 0f, new Vector2(3, 5), 1f, SpriteEffects.None, 0f);
+		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemMiddle_0").Value, position + new Vector2(12, 4), new Rectangle(8 * (int)qeChest.Frequency[1], 0, 8, 10), Color.White);
+		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemSide_0").Value, position + new Vector2(24, 4), new Rectangle(6 * (int)qeChest.Frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.FlipHorizontally, 0f);
 	}
 
 	public override void KillMultiTile(int i, int j, int frameX, int frameY)
@@ -67,8 +67,6 @@ public class QEChest : ModTile
 		PanelUI.Instance.CloseUI(qeChest);
 
 		qeChest.Kill(i, j);
-
-		// for (int index = 0; index < 3; index++) Item.NewItem(i * 16, j * 16, 32, 32, Utility.ColorToItem(qeChest.frequency[index]));
 
 		Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<Items.QEChest>());
 	}

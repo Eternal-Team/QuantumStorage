@@ -9,11 +9,6 @@ public class QuantumStorage : Mod
 	public const string AssetPath = "QuantumStorage/Assets/";
 	public const string TexturePath = AssetPath + "Textures/";
 
-	// internal static Texture2D textureGemsSide;
-	// internal static Texture2D textureGemsMiddle;
-	// internal static Texture2D textureRingSmall;
-	// internal static Texture2D textureRingBig;
-
 	// public override void HandlePacket(BinaryReader reader, int whoAmI) => Net.HandlePacket(reader, whoAmI);
 }
 
