@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using QuantumStorage.TileEntities;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -17,33 +16,9 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 	protected const int SlotSize = 44;
 	protected const int SlotMargin = 4;
 
-	private UIGrid<UIContainerSlot> GetGrid()
-	{
-		UIGrid<UIContainerSlot> grid = new UIGrid<UIContainerSlot>(9)
-		{
-			Width = { Percent = 100 },
-			Height = { Pixels = -28, Percent = 100 },
-			Y = { Pixels = 28 },
-			Settings = { ItemMargin = SlotMargin }
-		};
+	private ref Frequency Frequency => ref Container.Frequency;
 
-		ItemStorage storage = Container.GetItemStorage();
-		for (int i = 0; i < storage.Count; i++)
-		{
-			UIContainerSlot slot = new UIContainerSlot(storage, i)
-			{
-				Width = { Pixels = SlotSize },
-				Height = { Pixels = SlotSize }
-			};
-			grid.Add(slot);
-		}
-
-		return grid;
-	}
-
-	private UIText buttonInitialize;
-	private UITexture[] buttonsFrequency;
-	
+	private BaseElement initializePage;
 	private UIGrid<UIContainerSlot> gridItems;
 
 	public QEChestPanel(QEChest chest) : base(chest)
@@ -70,29 +45,28 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 			if (args.Button != MouseButton.Left) return;
 			args.Handled = true;
 
-			if (!Container.Frequency.IsSet)
+			if (!Frequency.IsSet)
 			{
-				// bug: will spawn "empty" item is color is default
-				for (int i = 0; i < 3; i++) Main.LocalPlayer.QuickSpawnItem(new EntitySource_Misc("QuantumStorage.Reset"), Utility.ColorToItem(Container.Frequency[i]));
+				for (int i = 0; i < 3; i++)
+					Utility.SpawnItem(Main.LocalPlayer, Utility.ColorToItem(Frequency[i]));
 
-				Container.Frequency = new Frequency();
+				Frequency = new Frequency();
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((ModTileEntity)Container).ID, Container.Position.X, Container.Position.Y);
 			}
 			else
 			{
-				// bug: will spawn "empty" item is color is default
-				for (int i = 0; i < 3; i++) Main.LocalPlayer.QuickSpawnItem(new EntitySource_Misc("QuantumStorage.Reset"), Utility.ColorToItem(Container.Frequency[i]));
+				for (int i = 0; i < 3; i++)
+					Utility.SpawnItem(Main.LocalPlayer, Utility.ColorToItem(Frequency[i]));
 
-				Container.Frequency = new Frequency();
+				Frequency = new Frequency();
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((ModTileEntity)Container).ID, Container.Position.X, Container.Position.Y);
 
 				Remove(gridItems);
 
 				InitializeFrequencySelection();
-				for (int i = 0; i < 3; i++) Add(buttonsFrequency[i]);
-				Add(buttonInitialize);
+				Add(initializePage);
 			}
 		};
 		Add(buttonReset);
@@ -107,65 +81,32 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 		buttonClose.OnMouseDown += args =>
 		{
 			if (args.Button != MouseButton.Left) return;
+			args.Handled = true;
 
 			PanelUI.Instance.CloseUI(Container);
-			args.Handled = true;
 		};
 		buttonClose.OnMouseEnter += _ => buttonClose.Settings.TextColor = Color.Red;
 		buttonClose.OnMouseLeave += _ => buttonClose.Settings.TextColor = Color.White;
 		Add(buttonClose);
 
-		if (!Container.Frequency.IsSet)
+		if (!Frequency.IsSet)
 		{
 			InitializeFrequencySelection();
-			for (int i = 0; i < 3; i++) Add(buttonsFrequency[i]);
-			Add(buttonInitialize);
+			Add(initializePage);
 		}
-		else
-		{
-			gridItems = GetGrid();
-			Add(gridItems);
-		}
+		else Add(gridItems = GetGrid());
 	}
 
 	private void InitializeFrequencySelection()
 	{
-		buttonsFrequency = new UITexture[3];
-		for (int i = 0; i < 3; i++)
+		initializePage = new BaseElement
 		{
-			int pos = i;
-			// note: size is kind of small
-			buttonsFrequency[i] = new UITexture(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemMiddle_0"))
-			{
-				Size = new Vector2(16, 20),
-				X = { Percent = 40 + 10 * pos },
-				Y = { Percent = 50 },
-				Settings = { SourceRectangle = new Rectangle(8 * (int)Container.Frequency[pos], 0, 8, 10) }
-			};
-			buttonsFrequency[i].OnMouseDown += args =>
-			{
-				if (args.Button != MouseButton.Left) return;
-				args.Handled = true;
-
-				if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
-				{
-					if (Container.Frequency[pos] != Colors.None) Main.LocalPlayer.QuickSpawnItem(new EntitySource_Misc("QuantumStorage.Reset"), Utility.ColorToItem(Container.Frequency[pos]));
-
-					Container.Frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
-					// buttonsFrequency[pos].Texture = QuantumStorage.textureGemsMiddle;
-					buttonsFrequency[pos].Settings.SourceRectangle = new Rectangle(8 * (int)Container.Frequency[pos], 0, 8, 10);
-					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((ModTileEntity)Container).ID, Container.Position.X, Container.Position.Y);
-
-					Main.mouseItem.stack--;
-					if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();
-
-					if (Container.Frequency.IsSet) buttonInitialize.Text = Language.GetTextValue("Mods.BaseLibrary.UI.Initialize");
-				}
-			};
-		}
+			Width = { Percent = 100 },
+			Height = { Percent = 100, Pixels = -28 }
+		};
 
 		// todo: render inside panel
-		buttonInitialize = new UIText(Language.GetText("Mods.QuantumStorage.UI.InsertGems"))
+		UIText buttonInitialize = new UIText(Language.GetText("Mods.QuantumStorage.UI.InsertGems"))
 		{
 			Width = { Pixels = -64, Percent = 100 },
 			Height = { Pixels = 40 },
@@ -178,15 +119,71 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 			if (args.Button != MouseButton.Left) return;
 			args.Handled = true;
 
-			if (!Container.Frequency.IsSet) return;
+			if (!Frequency.IsSet) return;
 
-			// note: store inside a blank element, easier to remove that way
-			for (int i = 0; i < 3; i++) Remove(buttonsFrequency[i]);
-			Remove(buttonInitialize);
-
-			gridItems = GetGrid();
-			Add(gridItems);
+			Remove(initializePage);
+			Add(gridItems = GetGrid());
 		};
+		initializePage.Add(buttonInitialize);
+
+		for (int i = 0; i < 3; i++)
+		{
+			int pos = i;
+			// note: size is kind of small
+			UITexture buttonFrequency = new UITexture(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemMiddle_0"))
+			{
+				Size = new Vector2(16, 20),
+				X = { Percent = 40 + 10 * pos },
+				Y = { Percent = 50 },
+				Settings = { SourceRectangle = new Rectangle(8 * (int)Frequency[pos], 0, 8, 10) }
+			};
+			buttonFrequency.OnMouseDown += args =>
+			{
+				if (args.Button != MouseButton.Left) return;
+				args.Handled = true;
+
+				if (!Utility.ValidItems.ContainsKey(Main.mouseItem.type))
+					return;
+
+				Utility.SpawnItem(Main.LocalPlayer, Utility.ColorToItem(Frequency[pos]));
+
+				Frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
+				buttonFrequency.Settings.SourceRectangle = new Rectangle(8 * (int)Frequency[pos], 0, 8, 10);
+
+				if (Main.netMode == NetmodeID.MultiplayerClient)
+					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((ModTileEntity)Container).ID, Container.Position.X, Container.Position.Y);
+
+				Main.mouseItem.stack--;
+				if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();
+
+				if (Frequency.IsSet) buttonInitialize.Text = Language.GetTextValue("Mods.BaseLibrary.UI.Initialize");
+			};
+			initializePage.Add(buttonFrequency);
+		}
+	}
+
+	private UIGrid<UIContainerSlot> GetGrid()
+	{
+		UIGrid<UIContainerSlot> grid = new UIGrid<UIContainerSlot>(9)
+		{
+			Width = { Percent = 100 },
+			Height = { Pixels = -28, Percent = 100 },
+			Y = { Pixels = 28 },
+			Settings = { ItemMargin = SlotMargin }
+		};
+
+		ItemStorage storage = Container.GetItemStorage();
+		for (int i = 0; i < storage.Count; i++)
+		{
+			UIContainerSlot slot = new UIContainerSlot(storage, i)
+			{
+				Width = { Pixels = SlotSize },
+				Height = { Pixels = SlotSize }
+			};
+			grid.Add(slot);
+		}
+
+		return grid;
 	}
 
 	public ItemStorage GetItemStorage() => Container.GetItemStorage();

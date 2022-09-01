@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace QuantumStorage;
@@ -34,30 +36,10 @@ internal static class Utility
 
 	internal static Frequency ReadFrequency(this BinaryReader reader) => new Frequency((Colors)reader.ReadByte(), (Colors)reader.ReadByte(), (Colors)reader.ReadByte());
 
-	// public static void Write(this BinaryWriter writer, SlotVector<>.ItemPair pair)
-	// {
-	// 	writer.Write(pair.Frequency);
-	// 	pair.Handler.Write(writer);
-	// }
-	//
-	// public static SlotVector<>.ItemPair ReadItemPair(this BinaryReader reader)
-	// {
-	// 	SlotVector<>.ItemPair pair = QSWorld.baseItemPair.Clone();
-	// 	pair.Frequency = reader.ReadFrequency();
-	// 	pair.Handler.Read(reader);
-	// 	return pair;
-	// }
-	//
-	// public static void Write(this BinaryWriter writer, FluidPair pair)
-	// {
-	// 	writer.Write(pair.Frequency);
-	// 	pair.Handler.Write(writer);
-	// }
-	//
-	// public static FluidPair ReadFluidPair(this BinaryReader reader)
-	// {
-	// 	FluidPair pair = QSWorld.baseFluidPair.Clone();
-	// 	pair.Frequency = reader.ReadFrequency();
-	// 	pair.Handler.Read(reader);
-	// 	return pair;
+	public static void SpawnItem(Player player, int type)
+	{
+		if (type == 0) return;
+		
+		player.QuickSpawnItem(new EntitySource_Misc("QuantumStorage.Reset"), type);
+	}
 }
