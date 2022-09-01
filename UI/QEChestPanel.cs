@@ -102,19 +102,18 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 		initializePage = new BaseElement
 		{
 			Width = { Percent = 100 },
-			Height = { Percent = 100, Pixels = -28 }
+			Height = { Percent = 100, Pixels = -28 },
+			Y = { Pixels = 28 }
 		};
 
-		// todo: render inside panel
-		UIText buttonInitialize = new UIText(Language.GetText("Mods.QuantumStorage.UI.InsertGems"))
+		UIPanel panelInitialize = new UIPanel
 		{
 			Width = { Pixels = -64, Percent = 100 },
 			Height = { Pixels = 40 },
-			Y = { Percent = 100 },
 			X = { Percent = 50 },
-			Settings = { HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center }
+			Y = { Percent = 100 }
 		};
-		buttonInitialize.OnMouseDown += args =>
+		panelInitialize.OnMouseDown += args =>
 		{
 			if (args.Button != MouseButton.Left) return;
 			args.Handled = true;
@@ -124,18 +123,36 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 			Remove(initializePage);
 			Add(gridItems = GetGrid());
 		};
-		initializePage.Add(buttonInitialize);
+		initializePage.Add(panelInitialize);
+
+		UIText textInitialize = new UIText(Language.GetText("Mods.QuantumStorage.UI.InsertGems"))
+		{
+			Width = { Percent = 100 },
+			Height = { Percent = 100 },
+			X = { Percent = 50 },
+			Y = { Percent = 50 },
+			Settings =
+			{
+				HorizontalAlignment = HorizontalAlignment.Center,
+				VerticalAlignment = VerticalAlignment.Center
+			}
+		};
+		panelInitialize.Add(textInitialize);
 
 		for (int i = 0; i < 3; i++)
 		{
 			int pos = i;
-			// note: size is kind of small
 			UITexture buttonFrequency = new UITexture(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemMiddle_0"))
 			{
 				Size = new Vector2(16, 20),
-				X = { Percent = 40 + 10 * pos },
-				Y = { Percent = 50 },
-				Settings = { SourceRectangle = new Rectangle(8 * (int)Frequency[pos], 0, 8, 10) }
+				X = { Percent = 50 + (pos - 1) * 10 },
+				Y = { Percent = 35 },
+				Settings =
+				{
+					SourceRectangle = new Rectangle(8 * (int)Frequency[pos], 0, 8, 10),
+					ScaleMode = ScaleMode.Stretch,
+					SamplerState = SamplerState.PointClamp
+				}
 			};
 			buttonFrequency.OnMouseDown += args =>
 			{
@@ -156,7 +173,7 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 				Main.mouseItem.stack--;
 				if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();
 
-				if (Frequency.IsSet) buttonInitialize.Text = Language.GetTextValue("Mods.BaseLibrary.UI.Initialize");
+				if (Frequency.IsSet) textInitialize.Text = Language.GetTextValue("Mods.BaseLibrary.UI.Initialize");
 			};
 			initializePage.Add(buttonFrequency);
 		}
