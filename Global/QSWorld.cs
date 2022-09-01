@@ -1,44 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ContainerLibrary;
-using ReLogic.Utilities;
-using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace QuantumStorage.Global;
 
-// public class ItemPair
-// 	{
-// 		public Frequency Frequency = new Frequency();
-// 		public ItemHandler Handler;
-//
-// 		public Action<Frequency, int> OnContentsChanged = (frequency, slot) => { };
-//
-// 		public ItemPair Clone() => new ItemPair
-// 		{
-// 			Frequency = (Frequency)Frequency.Clone(),
-// 			Handler = Handler.Clone()
-// 		};
-// 	}
-//
-// 	public class ItemPairSerializer : TagSerializer<ItemPair, TagCompound>
-// 	{
-// 		public override TagCompound Serialize(ItemPair value) => new TagCompound
-// 		{
-// 			["Frequency"] = value.Frequency,
-// 			["Items"] = value.Handler.Save()
-// 		};
-//
-// 		public override ItemPair Deserialize(TagCompound tag)
-// 		{
-// 			ItemPair pair = QSWorld.baseItemPair.Clone();
-// 			pair.Frequency = tag.Get<Frequency>("Frequency");
-// 			pair.Handler.Load(tag.Get<TagCompound>("Items"));
-// 			return pair;
-// 		}
-// 	}
-//
 // 	public class FluidPair
 // 	{
 // 		public Frequency Frequency = new Frequency();
@@ -76,28 +44,18 @@ public class QuantumStorageSystem : ModSystem
 	{
 		public BaseItemStorage() : base(27)
 		{
-			OnContentsChanged += (o, operation, arg3) => { };
+			OnContentsChanged += (user, operation, slot) =>
+			{
+				/*Net.SendItem(frequency, slot)*/
+			};
 		}
 	}
-	
+
 	public Dictionary<Frequency, ItemStorage> QEItemHandlers;
 	// public List<FluidPair> QEFluidHandlers;
 
-	// internal static ItemStorage baseItemPair;
-	// internal static FluidPair baseFluidPair;
-
 	public QuantumStorageSystem()
 	{
-		// baseItemPair = new ItemStorage(27);
-		// baseItemPair.OnContentsChanged += (o, operation, arg3) => { };
-		// baseItemPair.get
-		
-		// baseItemPair = new ItemPair
-		// {
-		// 	Handler = new ItemHandler(27)
-		// };
-		// baseItemPair.OnContentsChanged += (frequency, slot) => Net.SendItem(frequency, slot);
-		//
 		// baseFluidPair = new FluidPair
 		// {
 		// 	Handler = new FluidHandler()
@@ -108,33 +66,58 @@ public class QuantumStorageSystem : ModSystem
 		QEItemHandlers = new Dictionary<Frequency, ItemStorage>();
 		// QEFluidHandlers = new List<FluidPair>();
 	}
-	
+
 	public override void SaveWorldData(TagCompound tag)
 	{
-		// tag["QEItems"] = QEItemHandlers;
+		tag["QEItems"] = new TagCompound
+		{
+			["Keys"] = QEItemHandlers.Keys.ToList(),
+			["Values"] = QEItemHandlers.Values.Select(x => x.Save()).ToList()
+		};
+
 		// tag["QEFluids"] = QEFluidHandlers;
 	}
 
 	public override void LoadWorldData(TagCompound tag)
 	{
-		// QEItemHandlers = tag.GetList<ItemPair>("QEItems").ToList();
+		TagCompound items = tag.GetCompound("QEItems");
+		var keys = items.GetList<Frequency>("Keys");
+		var values = items.GetList<TagCompound>("Values").Select(tag =>
+		{
+			ItemStorage storage = new BaseItemStorage();
+			storage.Load(tag);
+			return storage;
+		}).ToList();
+		QEItemHandlers = keys.Zip(values).ToDictionary(x => x.First, x => x.Second);
+
 		// QEFluidHandlers = tag.GetList<FluidPair>("QEFluids").ToList();
 	}
 
 	public override void NetSend(BinaryWriter writer)
 	{
-		// writer.Write(QEItemHandlers.Count);
-		// foreach (ItemPair pair in QEItemHandlers) writer.Write(pair);
-		//
+		writer.Write(QEItemHandlers.Count);
+		foreach (var (frequency, storage) in QEItemHandlers)
+		{
+			writer.Write(frequency);
+			storage.Write(writer);
+		}
+		
 		// writer.Write(QEFluidHandlers.Count);
 		// foreach (FluidPair pair in QEFluidHandlers) writer.Write(pair);
 	}
 
 	public override void NetReceive(BinaryReader reader)
 	{
-		// int count = reader.ReadInt32();
-		// for (int i = 0; i < count; i++) QEItemHandlers.Add(reader.ReadItemPair());
-		//
+		int count = reader.ReadInt32();
+		for (int i = 0; i < count; i++)
+		{
+			Frequency frequency = reader.ReadFrequency();
+			
+			ItemStorage storage = new BaseItemStorage();
+			storage.Read(reader);
+			QEItemHandlers.Add(frequency,  storage);
+		}
+		
 		// count = reader.ReadInt32();
 		// for (int i = 0; i < count; i++) QEFluidHandlers.Add(reader.ReadFluidPair());
 	}
