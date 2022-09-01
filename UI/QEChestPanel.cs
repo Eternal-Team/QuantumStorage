@@ -17,37 +17,33 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 	protected const int SlotSize = 44;
 	protected const int SlotMargin = 4;
 
-	private UIGrid<UIContainerSlot> GridItems
+	private UIGrid<UIContainerSlot> GetGrid()
 	{
-		get
+		UIGrid<UIContainerSlot> grid = new UIGrid<UIContainerSlot>(9)
 		{
-			if (gridItems != null) return gridItems;
+			Width = { Percent = 100 },
+			Height = { Pixels = -28, Percent = 100 },
+			Y = { Pixels = 28 },
+			Settings = { ItemMargin = SlotMargin }
+		};
 
-			gridItems = new UIGrid<UIContainerSlot>(9)
+		ItemStorage storage = Container.GetItemStorage();
+		for (int i = 0; i < storage.Count; i++)
+		{
+			UIContainerSlot slot = new UIContainerSlot(storage, i)
 			{
-				Width = { Percent = 100 },
-				Height = { Pixels = -28, Percent = 100 },
-				Y = { Pixels = 28 },
-				Settings = { ItemMargin = SlotMargin }
+				Width = { Pixels = SlotSize },
+				Height = { Pixels = SlotSize }
 			};
-
-			gridItems.Clear();
-			for (int i = 0; i < Container.GetItemStorage().Count; i++)
-			{
-				UIContainerSlot slot = new UIContainerSlot(Container.GetItemStorage(), i)
-				{
-					Width = { Pixels = SlotSize },
-					Height = { Pixels = SlotSize }
-				};
-				gridItems.Add(slot);
-			}
-
-			return gridItems;
+			grid.Add(slot);
 		}
+
+		return grid;
 	}
 
 	private UIText buttonInitialize;
 	private UITexture[] buttonsFrequency;
+	
 	private UIGrid<UIContainerSlot> gridItems;
 
 	public QEChestPanel(QEChest chest) : base(chest)
@@ -62,11 +58,12 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 		};
 		Add(textLabel);
 
+		// todo: sprites
 		UIText buttonReset = new UIText("R")
 		{
 			Height = { Pixels = 20 },
 			Width = { Pixels = 20 },
-			HoverText = Language.GetText("Mods.QuantumStorage.UI.Reset")
+			HoverText = Language.GetText("Mods.BaseLibrary.UI.Reset")
 		};
 		buttonReset.OnMouseDown += args =>
 		{
@@ -75,6 +72,7 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 
 			if (!Container.Frequency.IsSet)
 			{
+				// bug: will spawn "empty" item is color is default
 				for (int i = 0; i < 3; i++) Main.LocalPlayer.QuickSpawnItem(new EntitySource_Misc("QuantumStorage.Reset"), Utility.ColorToItem(Container.Frequency[i]));
 
 				Container.Frequency = new Frequency();
@@ -83,13 +81,14 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 			}
 			else
 			{
+				// bug: will spawn "empty" item is color is default
 				for (int i = 0; i < 3; i++) Main.LocalPlayer.QuickSpawnItem(new EntitySource_Misc("QuantumStorage.Reset"), Utility.ColorToItem(Container.Frequency[i]));
 
 				Container.Frequency = new Frequency();
 				if (Main.netMode == NetmodeID.MultiplayerClient)
 					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((ModTileEntity)Container).ID, Container.Position.X, Container.Position.Y);
 
-				Remove(GridItems);
+				Remove(gridItems);
 
 				InitializeFrequencySelection();
 				for (int i = 0; i < 3; i++) Add(buttonsFrequency[i]);
@@ -122,7 +121,11 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 			for (int i = 0; i < 3; i++) Add(buttonsFrequency[i]);
 			Add(buttonInitialize);
 		}
-		else Add(GridItems);
+		else
+		{
+			gridItems = GetGrid();
+			Add(gridItems);
+		}
 	}
 
 	private void InitializeFrequencySelection()
@@ -131,12 +134,13 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 		for (int i = 0; i < 3; i++)
 		{
 			int pos = i;
-			buttonsFrequency[i] = new UITexture(ModContent.Request<Texture2D>(QuantumStorage.TexturePath+"Tiles/GemMiddle_0"))
+			// note: size is kind of small
+			buttonsFrequency[i] = new UITexture(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemMiddle_0"))
 			{
 				Size = new Vector2(16, 20),
 				X = { Percent = 40 + 10 * pos },
 				Y = { Percent = 50 },
-				Settings = {SourceRectangle = new Rectangle(8 * (int)Container.Frequency[pos], 0, 8, 10)}
+				Settings = { SourceRectangle = new Rectangle(8 * (int)Container.Frequency[pos], 0, 8, 10) }
 			};
 			buttonsFrequency[i].OnMouseDown += args =>
 			{
@@ -146,16 +150,16 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 				if (Utility.ValidItems.ContainsKey(Main.mouseItem.type))
 				{
 					if (Container.Frequency[pos] != Colors.None) Main.LocalPlayer.QuickSpawnItem(new EntitySource_Misc("QuantumStorage.Reset"), Utility.ColorToItem(Container.Frequency[pos]));
-					
+
 					Container.Frequency[pos] = Utility.ValidItems[Main.mouseItem.type];
 					// buttonsFrequency[pos].Texture = QuantumStorage.textureGemsMiddle;
 					buttonsFrequency[pos].Settings.SourceRectangle = new Rectangle(8 * (int)Container.Frequency[pos], 0, 8, 10);
-					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null,((ModTileEntity)Container).ID, Container.Position.X, Container.Position.Y);
+					if (Main.netMode == NetmodeID.MultiplayerClient) NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((ModTileEntity)Container).ID, Container.Position.X, Container.Position.Y);
 
 					Main.mouseItem.stack--;
 					if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();
 
-					if (Container.Frequency.IsSet) buttonInitialize.Text = Language.GetTextValue("Mods.QuantumStorage.UI.Initialize");
+					if (Container.Frequency.IsSet) buttonInitialize.Text = Language.GetTextValue("Mods.BaseLibrary.UI.Initialize");
 				}
 			};
 		}
@@ -167,19 +171,21 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 			Height = { Pixels = 40 },
 			Y = { Percent = 100 },
 			X = { Percent = 50 },
-			Settings = { HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center}
+			Settings = { HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center }
 		};
 		buttonInitialize.OnMouseDown += args =>
 		{
 			if (args.Button != MouseButton.Left) return;
 			args.Handled = true;
-			
+
 			if (!Container.Frequency.IsSet) return;
 
+			// note: store inside a blank element, easier to remove that way
 			for (int i = 0; i < 3; i++) Remove(buttonsFrequency[i]);
 			Remove(buttonInitialize);
 
-			Add(GridItems);
+			gridItems = GetGrid();
+			Add(gridItems);
 		};
 	}
 
