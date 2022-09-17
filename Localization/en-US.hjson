@@ -12,10 +12,33 @@
 		}
 		
 		ItemTooltip: {
-			QETank: Stores 10 buckets of fluid\nInsert the gems in the slots to set frequency\n"A lens to glimpse at the multiverse."
-            QEChest: Stores 27 stacks of items\nInsert the gems in the slots to set frequency\n"No one knows for sure what is inside when it's closed."
-            QEBucket: Stores 10 buckets of fluid\nRight-click to open UI\nUse to pickup liquid, alt use to place it\nInsert the gems in the slots to set frequency\n"Space will flow through your hands."
-            QEBag: Stores 27 stacks of items\nRight-click or use to open UI\nInsert the gems in the slots to set frequency\n"Contains an infinite amount of possibilities."
+			QETank: 
+			'''
+			Stores 10 buckets of fluid
+			Insert the gems in the slots to set frequency
+			"A lens to glimpse at the multiverse."
+			'''
+            QEChest:
+            '''
+            Stores 27 stacks of items
+            Insert the gems in the slots to set frequency
+            "No one knows for sure what is inside when it's closed."
+            '''
+            QEBucket:
+            '''
+            Stores 10 buckets of fluid
+            Right-click to open U
+            Use to pickup liquid, alt use to place it
+            Insert the gems in the slots to set frequency
+            "Space will flow through your hands."
+            '''
+            QEBag:
+            '''
+            Stores 27 stacks of items
+            Right-click or use to open UI
+            Insert the gems in the slots to set frequency
+            "Contains an infinite amount of possibilities."
+            '''
 		}
 	
 		MapObject: {
