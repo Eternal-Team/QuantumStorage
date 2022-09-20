@@ -121,19 +121,18 @@ public class QEBucket : BaseItem, IHasUI, IFluidStorage
 
 	public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 	{
-		// todo: dont request textures each frame
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Items/RingBig").Value, position + new Vector2(4, 14) * scale, new Rectangle(0, 4 * (int)Frequency[0], 22, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Items/RingBig").Value, position + new Vector2(4, 18) * scale, new Rectangle(0, 4 * (int)Frequency[1], 22, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Items/RingSmall").Value, position + new Vector2(6, 22) * scale, new Rectangle(0, 4 * (int)Frequency[2], 18, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureRingBig.Value, position + new Vector2(4, 14) * scale, new Rectangle(0, 4 * (int)Frequency[0], 22, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureRingBig.Value, position + new Vector2(4, 18) * scale, new Rectangle(0, 4 * (int)Frequency[1], 22, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureRingSmall.Value, position + new Vector2(6, 22) * scale, new Rectangle(0, 4 * (int)Frequency[2], 18, 4), Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
 	}
 
 	public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
 		Vector2 position = new Vector2(Item.position.X - Main.screenPosition.X + Item.width * 0.5f, Item.position.Y - Main.screenPosition.Y + Item.height - 14f + 2f);
 
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Items/RingBig").Value, position, new Rectangle(0, 4 * (int)Frequency[0], 22, 4), alphaColor, rotation, new Vector2(11, 0), scale, SpriteEffects.None, 0f);
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Items/RingBig").Value, position, new Rectangle(0, 4 * (int)Frequency[1], 22, 4), alphaColor, rotation, new Vector2(11, -4), scale, SpriteEffects.None, 0f);
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Items/RingSmall").Value, position, new Rectangle(0, 4 * (int)Frequency[2], 18, 4), alphaColor, rotation, new Vector2(9, -8), scale, SpriteEffects.FlipHorizontally, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureRingBig.Value, position, new Rectangle(0, 4 * (int)Frequency[0], 22, 4), alphaColor, rotation, new Vector2(11, 0), scale, SpriteEffects.None, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureRingBig.Value, position, new Rectangle(0, 4 * (int)Frequency[1], 22, 4), alphaColor, rotation, new Vector2(11, -4), scale, SpriteEffects.None, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureRingSmall.Value, position, new Rectangle(0, 4 * (int)Frequency[2], 18, 4), alphaColor, rotation, new Vector2(9, -8), scale, SpriteEffects.FlipHorizontally, 0f);
 	}
 
 	public override void SaveData(TagCompound tag)

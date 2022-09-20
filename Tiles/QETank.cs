@@ -116,9 +116,9 @@ public class QETank : ModTile
 
 		Vector2 position = new Point16(i, j).ToScreenCoordinates();
 
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemSide_0").Value, position + new Vector2(5, 5), new Rectangle(6 * (int)qeTank.Frequency[0], 0, 6, 10), Color.White, 0f, new Vector2(3, 5), 1f, SpriteEffects.None, 0f);
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemMiddle_0").Value, position + new Vector2(12, 0), new Rectangle(8 * (int)qeTank.Frequency[1], 0, 8, 10), Color.White);
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemSide_0").Value, position + new Vector2(24, 0), new Rectangle(6 * (int)qeTank.Frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.FlipHorizontally, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureGemsSide.Value, position + new Vector2(5, 5), new Rectangle(6 * (int)qeTank.Frequency[0], 0, 6, 10), Color.White, 0f, new Vector2(3, 5), 1f, SpriteEffects.None, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureGemsMiddle.Value, position + new Vector2(12, 0), new Rectangle(8 * (int)qeTank.Frequency[1], 0, 8, 10), Color.White);
+		spriteBatch.Draw(QuantumStorage.TextureGemsSide.Value, position + new Vector2(24, 0), new Rectangle(6 * (int)qeTank.Frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, Vector2.One, SpriteEffects.FlipHorizontally, 0f);
 
 		FluidStorage storage = qeTank.GetFluidStorage();
 		FluidStack stack = storage[0];

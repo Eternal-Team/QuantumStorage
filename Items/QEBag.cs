@@ -98,18 +98,18 @@ public class QEBag : BaseItem, IItemStorage, IHasUI
 
 	public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 	{
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemSide_0").Value, position + new Vector2(2, 12) * scale, new Rectangle(6 * (int)Frequency[0], 0, 6, 10), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemMiddle_0").Value, position + new Vector2(12, 12) * scale, new Rectangle(8 * (int)Frequency[1], 0, 8, 10), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemSide_0").Value, position + new Vector2(24, 12) * scale, new Rectangle(6 * (int)Frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.FlipHorizontally, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureGemsSide.Value, position + new Vector2(2, 12) * scale, new Rectangle(6 * (int)Frequency[0], 0, 6, 10), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureGemsMiddle.Value, position + new Vector2(12, 12) * scale, new Rectangle(8 * (int)Frequency[1], 0, 8, 10), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureGemsSide.Value, position + new Vector2(24, 12) * scale, new Rectangle(6 * (int)Frequency[2], 0, 6, 10), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.FlipHorizontally, 0f);
 	}
 
 	public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 	{
 		Vector2 position = new Vector2(Item.position.X - Main.screenPosition.X + Item.width * 0.5f, Item.position.Y - Main.screenPosition.Y + Item.height - 17f + 2f);
 
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemSide_0").Value, position, new Rectangle(6 * (int)Frequency[0], 0, 6, 10), alphaColor, rotation, new Vector2(14, 5), scale, SpriteEffects.None, 0f);
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemMiddle_0").Value, position, new Rectangle(8 * (int)Frequency[1], 0, 8, 10), alphaColor, rotation, new Vector2(4, 5), scale, SpriteEffects.None, 0f);
-		spriteBatch.Draw(ModContent.Request<Texture2D>(QuantumStorage.TexturePath + "Tiles/GemSide_0").Value, position, new Rectangle(6 * (int)Frequency[2], 0, 6, 10), alphaColor, rotation, new Vector2(-8, 5), scale, SpriteEffects.FlipHorizontally, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureGemsSide.Value, position, new Rectangle(6 * (int)Frequency[0], 0, 6, 10), alphaColor, rotation, new Vector2(14, 5), scale, SpriteEffects.None, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureGemsMiddle.Value, position, new Rectangle(8 * (int)Frequency[1], 0, 8, 10), alphaColor, rotation, new Vector2(4, 5), scale, SpriteEffects.None, 0f);
+		spriteBatch.Draw(QuantumStorage.TextureGemsSide.Value, position, new Rectangle(6 * (int)Frequency[2], 0, 6, 10), alphaColor, rotation, new Vector2(-8, 5), scale, SpriteEffects.FlipHorizontally, 0f);
 	}
 
 	public override void AddRecipes()
