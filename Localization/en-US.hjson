@@ -27,7 +27,7 @@
             QEBucket:
             '''
             Stores 10 buckets of fluid
-            Right-click to open U
+            Right-click to open UI
             Use to pickup liquid, alt use to place it
             Insert the gems in the slots to set frequency
             "Space will flow through your hands."
