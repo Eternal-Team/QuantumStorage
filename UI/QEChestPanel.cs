@@ -52,7 +52,7 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 
 				Frequency = new Frequency();
 				if (Main.netMode == NetmodeID.MultiplayerClient)
-					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((ModTileEntity)Container).ID, Container.Position.X, Container.Position.Y);
+					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, Container.ID, Container.Position.X, Container.Position.Y);
 			}
 			else
 			{
@@ -61,7 +61,7 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 
 				Frequency = new Frequency();
 				if (Main.netMode == NetmodeID.MultiplayerClient)
-					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((ModTileEntity)Container).ID, Container.Position.X, Container.Position.Y);
+					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, Container.ID, Container.Position.X, Container.Position.Y);
 
 				Remove(gridItems);
 
@@ -83,7 +83,7 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 			if (args.Button != MouseButton.Left) return;
 			args.Handled = true;
 
-			PanelUI.Instance.CloseUI(Container);
+			PanelUI.Instance?.CloseUI(Container);
 		};
 		buttonClose.OnMouseEnter += _ => buttonClose.Settings.TextColor = Color.Red;
 		buttonClose.OnMouseLeave += _ => buttonClose.Settings.TextColor = Color.White;
@@ -168,7 +168,7 @@ public class QEChestPanel : BaseUIPanel<QEChest>, IItemStorageUI
 				buttonFrequency.Settings.SourceRectangle = new Rectangle(8 * (int)Frequency[pos], 0, 8, 10);
 
 				if (Main.netMode == NetmodeID.MultiplayerClient)
-					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, ((ModTileEntity)Container).ID, Container.Position.X, Container.Position.Y);
+					NetMessage.SendData(MessageID.TileEntitySharing, -1, -1, null, Container.ID, Container.Position.X, Container.Position.Y);
 
 				Main.mouseItem.stack--;
 				if (Main.mouseItem.stack <= 0) Main.mouseItem.TurnToAir();

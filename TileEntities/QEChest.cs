@@ -4,7 +4,6 @@ using BaseLibrary;
 using BaseLibrary.UI;
 using BaseLibrary.Utility;
 using ContainerLibrary;
-using QuantumStorage.Global;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
@@ -16,7 +15,7 @@ public class QEChest : BaseTileEntity, IItemStorage, IHasUI
 {
 	protected override Type TileType => typeof(Tiles.QEChest);
 
-	public new Guid ID;
+	private new Guid ID;
 	public Frequency Frequency;
 
 	public QEChest()

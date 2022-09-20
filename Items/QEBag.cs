@@ -6,7 +6,6 @@ using BaseLibrary.Utility;
 using ContainerLibrary;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using QuantumStorage.Global;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -18,7 +17,7 @@ public class QEBag : BaseItem, IItemStorage, IHasUI
 {
 	public override string Texture => QuantumStorage.TexturePath + "Items/QEBag";
 
-	public Guid ID;
+	private Guid ID;
 	public Frequency Frequency;
 
 	public override void OnCreate(ItemCreationContext context)
