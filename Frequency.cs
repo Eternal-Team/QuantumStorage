@@ -4,7 +4,7 @@ using Terraria.ModLoader.IO;
 
 namespace QuantumStorage;
 
-public readonly struct Frequency : ICloneable
+public readonly struct Frequency
 {
 	private readonly Colors[] colors;
 
@@ -25,7 +25,7 @@ public readonly struct Frequency : ICloneable
 
 	public override int GetHashCode() => int.Parse($"{(byte)colors[0]}{(byte)colors[1]}{(byte)colors[2]}");
 
-	public object Clone() => new Frequency(colors);
+	public Frequency Clone() => new Frequency(colors);
 
 	public override bool Equals(object obj)
 	{

@@ -33,7 +33,7 @@ public class QEChest : ModTile
 	{
 		if (!TileEntityUtility.TryGetTileEntity(i, j, out TileEntities.QEChest qeChest)) return false;
 
-		PanelUI.Instance.HandleUI(qeChest);
+		PanelUI.Instance?.HandleUI(qeChest);
 
 		return true;
 	}
@@ -64,7 +64,7 @@ public class QEChest : ModTile
 	{
 		if (!TileEntityUtility.TryGetTileEntity(i, j, out TileEntities.QEChest qeChest)) return;
 
-		PanelUI.Instance.CloseUI(qeChest);
+		PanelUI.Instance?.CloseUI(qeChest);
 
 		qeChest.Kill(i, j);
 
